@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
+    defaultConfig {
+        applicationId 'com.uteamtec.heartcool'
+        minSdkVersion 18
+        targetSdkVersion 25
+        versionCode 6
+        versionName "1.4.3"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile files('libs/ThinkGear.jar')
+    compile files('libs/afinal_0.5.1.jar')
+    compile project(':onekeyshare')
+    compile 'org.xutils:xutils:3.2.8'
+    compile files('src/main/libs/com.uteamtec.algorithm.dsp.jar')
+    compile files('src/main/libs/com.uteamtec.algorithm.types.jar')
+    compile 'com.android.volley:volley:1.0.0'
+    compile 'com.inuker.bluetooth:library:1.1.8'
+    compile(name: 'blekit')
+    compile(name: 'lite-orm-1.9.2')
+    compile(name: 'calendarlistview', ext: 'aar')
+}
