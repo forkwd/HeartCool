@@ -1,0 +1,6 @@
+Mark图标说明:
+1.warning_noise用来表示心电分析数据Mark标识
+2.warning_device用来表示硬件通信连接时产生的Mark标识
+
+由于缺少UI设计只能用之前设计好的图标，其中心电分析数据Mark统一用warning_noise显示，
+硬件Mark统一用warning_device显示，后续可对Mark图标进行补充替换。
