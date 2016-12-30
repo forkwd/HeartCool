@@ -6,7 +6,7 @@
     android:background="#FFF"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".activity.AeroCardioActivity$PlaceholderAeroCardioFragment">
+    tools:context=".fragment.PlaceholderAeroCardioFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
