@@ -12,9 +12,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.uteamtec.heartcool.R;
-import com.uteamtec.heartcool.fragment.AeroCardioFragment;
 import com.uteamtec.heartcool.fragment.BaseFragment;
-import com.uteamtec.heartcool.fragment.HistoryFragment;
+import com.uteamtec.heartcool.fragment.PlaceholderAeroCardioFragment;
+import com.uteamtec.heartcool.fragment.PlaceholderHistoryFragment;
 import com.uteamtec.heartcool.service.ble.BleFeComm;
 import com.uteamtec.heartcool.service.db.DBOrm;
 import com.uteamtec.heartcool.service.net.AppNetTcpComm;
@@ -191,48 +191,6 @@ public class AeroCardioActivity extends BaseAppCompatActivity
 
     @Override
     public void onPageScrollStateChanged(int state) {
-    }
-
-    public static class PlaceholderAeroCardioFragment extends AeroCardioFragment {
-
-        private static PlaceholderAeroCardioFragment fragment;
-
-        public PlaceholderAeroCardioFragment() {
-            super();
-        }
-
-        public static PlaceholderAeroCardioFragment newInstance(BaseFragmentListener listener) {
-            fragment = new PlaceholderAeroCardioFragment();
-            fragment.setListener(listener);
-            fragment.setArguments(new Bundle());
-            return fragment;
-        }
-
-        public static PlaceholderAeroCardioFragment getInstance() {
-            return fragment;
-        }
-
-    }
-
-    public static class PlaceholderHistoryFragment extends HistoryFragment {
-
-        private static PlaceholderHistoryFragment fragment;
-
-        public PlaceholderHistoryFragment() {
-            super();
-        }
-
-        public static PlaceholderHistoryFragment newInstance(BaseFragmentListener listener) {
-            fragment = new PlaceholderHistoryFragment();
-            fragment.setListener(listener);
-            fragment.setArguments(new Bundle());
-            return fragment;
-        }
-
-        public static PlaceholderHistoryFragment getInstance() {
-            return fragment;
-        }
-
     }
 
     private final class SectionsPagerAdapter extends WrapContentViewPagerAdapter {
