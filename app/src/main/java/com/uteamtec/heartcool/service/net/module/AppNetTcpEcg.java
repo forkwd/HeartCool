@@ -43,6 +43,8 @@ public final class AppNetTcpEcg extends AppNetTcpBase {
                     put("normalHRRange", String.valueOf(detection.getHRRange()));
                     put("monitoringFeedback", detection.getFeedback());
                     put("anomalyIndex", detection.getAbnormal());
+                    put("breathRate", String.valueOf(detection.getBR()));
+                    put("signalQuality", detection.getMarkStats().getSQ());
                 }}),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -90,14 +92,16 @@ public final class AppNetTcpEcg extends AppNetTcpBase {
                                     list = new ArrayList<>();
                                     for (int i = 0; i < response.length(); i++) {
                                         JSONObject obj = response.getJSONObject(i);
-                                        list.add(new DBDetection(
+                                        DBDetection d = new DBDetection(
                                                 obj.getLong("startTime"),
                                                 obj.getLong("stopTime"),
                                                 obj.optInt("avgHR"),
                                                 obj.optInt("normalHRRange"),
                                                 obj.optString("monitoringFeedback"),
                                                 obj.optString("anomalyIndex")
-                                        ));
+                                        );
+                                        d.setBR(obj.getInt("breathRate"));
+                                        list.add(d);
                                     }
                                     listener.onResponse(true, list);
                                     return;
