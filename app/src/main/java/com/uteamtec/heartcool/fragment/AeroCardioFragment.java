@@ -185,7 +185,7 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
     }
 
     private void keepConnect() {
-        if (GlobalVar.getUser().hasUserDevice()) {
+        if (GlobalVar.getUser().hasUserDeviceAndMac()) {
             refreshProgress();
             BleFeComm.getClient().connect(GlobalVar.getUser().getUserDevice().getMacAddr());
         } else if (GlobalVar.getUser().hasPrevUserDevice()) {

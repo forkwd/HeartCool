@@ -252,7 +252,7 @@ public class LoginsActivity extends AppCompatActivity {
                             L.e("queryBindDeviceByInfoId -> success: " + success);
                             if (success && response != null) {
                                 L.e("queryBindDeviceByInfoId -> response:" + response.toString());
-                                GlobalVar.getUser().setUserDevice(response);
+                                GlobalVar.getUser().updateUserDevice(response);
                                 gotoMain();
                             } else {
                                 gotoSetting();

@@ -223,7 +223,14 @@ public final class User extends com.uteamtec.algorithm.types.User implements Ser
      * 存在默认设备
      */
     public boolean hasUserDevice() {
-        return (getUserDevice() != null && BleUtils.validBleDeviceAddress(getUserDevice().getMacAddr()));
+        return (getUserDevice() != null);
+    }
+
+    /**
+     * 存在默认合法设备
+     */
+    public boolean hasUserDeviceAndMac() {
+        return (hasUserDevice() && BleUtils.validBleDeviceAddress(getUserDevice().getMacAddr()));
     }
 
     private UserDevices userDevices = null;
