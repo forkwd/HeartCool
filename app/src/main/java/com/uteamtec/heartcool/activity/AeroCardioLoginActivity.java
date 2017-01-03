@@ -121,7 +121,7 @@ public class AeroCardioLoginActivity extends BaseAppCompatActivity implements Vi
         AppNetTcpComm.getUser().validate(username, password, new AppNetTcpCommListener<String>() {
             @Override
             public void onResponse(boolean success, String response) {
-                L.e("login -> success: " + success + " response:" + response);
+                L.e("validate -> success: " + success + " response:" + response);
                 if (success) {
                     if (cbRemember.isChecked()) {
                         Config.putBoolean(Config.Info,
@@ -176,7 +176,9 @@ public class AeroCardioLoginActivity extends BaseAppCompatActivity implements Vi
                                 }
                             });
                 } else {
-                    Toast.makeText(AeroCardioLoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AeroCardioLoginActivity.this,
+                            getString(R.string.login_fail_err, response),
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
