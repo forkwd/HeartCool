@@ -19,35 +19,33 @@ public class AeroCardioWelcomeActivity extends BaseAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (false) { // 测试
+            gotoNetTest();
+            return;
+        }
+
         setContentView(R.layout.activity_aerocardio_welcome);
-
-        new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                Intent intent;
-                // 默认是第一次进入应用
-                if (Config.getBoolean(Config.Info, Config.PREF_APP_FIRST, true)) {
-                    intent = new Intent(AeroCardioWelcomeActivity.this, AeroCardioLoginActivity.class);
-                } else {
-                    intent = new Intent(AeroCardioWelcomeActivity.this, AeroCardioLoginActivity.class);
-//                    intent = new Intent(AeroCardioWelcomeActivity.this, TestAppNetActivity.class);
-//                intent = new Intent(AeroCardioWelcomeActivity.this, TestDBActivity.class);
-//                intent = new Intent(AeroCardioWelcomeActivity.this, TestHistoryActivity.class);
-                }
-
-                Config.putBoolean(Config.Info, Config.PREF_APP_FIRST, false);
-                Config.putBoolean(Config.Info, Config.PREF_LOGIN_AUTO,
-                        !TextUtils.isEmpty(GlobalVar.getUser().getPassword()));
-
-                startActivity(intent);
-                AeroCardioWelcomeActivity.this.finish();
-                return false;
-            }
-        }).sendEmptyMessageDelayed(0, 1000);
     }
 
     @Override
     protected void initViews() {
+        // 默认是第一次进入应用
+//                if (Config.getBoolean(Config.Info, Config.PREF_APP_FIRST, true)) {
+//                }
+        Config.putBoolean(Config.Info, Config.PREF_APP_FIRST, false);
+
+        // 设置是否自动登录
+        Config.putBoolean(Config.Info, Config.PREF_LOGIN_AUTO,
+                !TextUtils.isEmpty(GlobalVar.getUser().getPassword()));
+
+        new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                gotoLogin();
+                return false;
+            }
+        }).sendEmptyMessageDelayed(0, 1000);
     }
 
     @Override
@@ -66,6 +64,16 @@ public class AeroCardioWelcomeActivity extends BaseAppCompatActivity {
 
     @Override
     public void onServiceDisconnected() {
+    }
+
+    private void gotoNetTest() {
+        startActivity(new Intent(this, TestAppNetActivity.class));
+        finish();
+    }
+
+    private void gotoLogin() {
+        startActivity(new Intent(this, AeroCardioLoginActivity.class));
+        finish();
     }
 
 }

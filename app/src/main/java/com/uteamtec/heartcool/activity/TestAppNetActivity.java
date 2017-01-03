@@ -20,7 +20,7 @@ import java.util.List;
  * 网络请求测试页面
  * Created by wd
  */
-public class TestAppNetActivity extends BaseActivity {
+public class TestAppNetActivity extends BaseAppCompatActivity {
 
     private static final String TAG = TestAppNetActivity.class.getSimpleName();
 
@@ -33,12 +33,35 @@ public class TestAppNetActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
+        validate();
 //        isExistTelephone();
 //        queryAppUserInfoByInfoId();
 //        deletePatientByTelephone();
 //        sendMessage();
-        updatePasswordByApp();
-        validate();
+//        updatePasswordByApp();
+//        validate();
+    }
+
+    @Override
+    protected void initViews() {
+    }
+
+    @Override
+    protected boolean enableBackPressedFinish() {
+        return true;
+    }
+
+    @Override
+    protected boolean enableServiceConnection() {
+        return false;
+    }
+
+    @Override
+    public void onServiceConnected() {
+    }
+
+    @Override
+    public void onServiceDisconnected() {
     }
 
     // ==========================================================================

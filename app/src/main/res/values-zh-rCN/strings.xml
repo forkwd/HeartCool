@@ -262,6 +262,7 @@
 
     <string name="http_conn_net">服务器连接错误，请检查网络</string>
     <string name="http_conn_err">服务器连接错误: %1$s</string>
+    <string name="login_fail_err">登录失败: %1$s</string>
 
     <string name="online">在线模式</string>
     <string name="offline">离线模式</string>
