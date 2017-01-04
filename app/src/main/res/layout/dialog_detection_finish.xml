@@ -17,7 +17,7 @@
             android:gravity="center"
             android:text="@string/notice"
             android:textColor="@color/colorHisSize"
-            android:textSize="20sp" />
+            android:textSize="25sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,7 +28,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/finish" />
+                android:text="@string/finish"
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,13 +40,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/detection_date_title" />
+                    android:text="@string/detection_date_title"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/dialog_detection_finish_tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp" />
+                    android:layout_marginLeft="12dp"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -57,13 +60,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/detection_time_title" />
+                    android:text="@string/detection_time_title"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/dialog_detection_finish_tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp" />
+                    android:layout_marginLeft="12dp"
+                    android:textSize="18sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -73,7 +78,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/seeDetail"
-            android:textColor="@color/colorHisSize" />
+            android:textColor="@color/colorHisSize"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
