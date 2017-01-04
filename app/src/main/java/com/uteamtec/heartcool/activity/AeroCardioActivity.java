@@ -1,5 +1,7 @@
 package com.uteamtec.heartcool.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -109,7 +111,25 @@ public class AeroCardioActivity extends BaseAppCompatActivity
                 BleFeComm.getClient().reconnect();
                 return true;
             case R.id.action_settings_change_device:
-                gotoSetting();
+                AlertDialog.Builder dialog_change_device = new AlertDialog.Builder(this);
+                dialog_change_device.setTitle(getResources().getString(R.string.aerocardio_setting_confirm_title));
+                dialog_change_device.setMessage(getResources().getString(R.string.aerocardio_setting_confirm_content));
+                dialog_change_device.setPositiveButton(getResources().getString(R.string.yes),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                gotoSetting();
+                            }
+                        });
+                dialog_change_device.setNegativeButton(getResources().getString(R.string.no),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                dialog_change_device.create().show();
                 return true;
             case R.id.action_settings_clear_db:
                 DBOrm.clean();
@@ -118,11 +138,30 @@ public class AeroCardioActivity extends BaseAppCompatActivity
                 gotoPersonal();
                 return true;
             case R.id.action_settings_logout:
-                MobclickEvent.onEvent(this,
-                        MobclickEvent.EventId_UserSignOut);
-                User.getUser().clear();
-                User.getUser().reset();
-                gotoLogin();
+                AlertDialog.Builder dialog_logout = new AlertDialog.Builder(this);
+                dialog_logout.setTitle(getResources().getString(R.string.logout));
+                dialog_logout.setMessage(getResources().getString(R.string.logout_ask));
+                dialog_logout.setPositiveButton(getResources().getString(R.string.yes),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                                MobclickEvent.onEvent(AeroCardioActivity.this,
+                                        MobclickEvent.EventId_UserSignOut);
+                                User.getUser().clear();
+                                User.getUser().reset();
+                                gotoLogin();
+                            }
+                        });
+                dialog_logout.setNegativeButton(getResources().getString(R.string.no),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                dialog_logout.create().show();
                 return true;
             case R.id.action_settings_login:
                 gotoLogin();
