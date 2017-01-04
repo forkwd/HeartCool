@@ -33,7 +33,6 @@ import com.uteamtec.heartcool.service.type.EcgMark;
 import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.service.type.UserDevice;
 import com.uteamtec.heartcool.service.type.UserSaveType;
-import com.uteamtec.heartcool.utils.ActivityStack;
 import com.uteamtec.heartcool.utils.L;
 
 import java.io.IOException;
@@ -393,7 +392,7 @@ public class MainMgrService extends Service {
                 } else {
                     L.e("AppMessage.TYPE_ACTIVATE_ACK (success) -> dev: " + dev.toString());
                     User.getUser().setConnectedDeviceAppNet(true);
-                    ActivityStack.toast(R.string.online);
+//                    ActivityStack.toast(R.string.online);
 
                     User.getUser().updatePrevUserDevice(new UserDevice(dev));
 
@@ -417,7 +416,7 @@ public class MainMgrService extends Service {
                 if (result == AppMessage.ACK_OK) {
 //                    L.e("AppMessage.TYPE_ACTIVATE_ACK (success)");
                     User.getUser().setConnectedDeviceAppNet(true);
-                    ActivityStack.toast(R.string.online);
+//                    ActivityStack.toast(R.string.online);
 
                     UserDevice devConnected = User.getUser().getUserDevice();
 

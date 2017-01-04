@@ -33,7 +33,7 @@
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:background="@drawable/bt_bg"
+                android:background="@drawable/btn_bg"
                 android:gravity="center"
                 android:text="@string/cancel"
                 android:textColor="@color/colorStep" />
@@ -51,7 +51,7 @@
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:background="@drawable/bt_bg"
+                android:background="@drawable/btn_bg"
                 android:gravity="center"
                 android:text="@string/sure"
                 android:textColor="@color/colorStep" />
