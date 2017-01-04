@@ -45,10 +45,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 public class DetectionsActivity extends BaseActivity implements View.OnClickListener {
 
@@ -100,7 +98,7 @@ public class DetectionsActivity extends BaseActivity implements View.OnClickList
         view.setLongClickable(true);
         view.setOnTouchListener(new MyGestureListener(this));
         //获取当前日期
-        detection_time_tv.setText(new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(new Date()));
+        detection_time_tv.setText(DateFormats.YYYY_MM_CN.format(new Date()));
         //设置按钮监听
         setting_rl = (LinearLayout) findViewById(R.id.activity_detection_ll_setting);
         setting_rl.setOnClickListener(new View.OnClickListener() {
