@@ -91,7 +91,7 @@ public class AeroCardioRegisterNextActivity extends BaseAppCompatActivity implem
     }
 
     private void gotoPersonal() {
-        Intent intent = new Intent(this, PersonalActivity.class);
+        Intent intent = new Intent(this, AeroCardioPersonalActivity.class);
         intent.putExtra("phone", phone);
         intent.putExtra("password", etPsw.getText().toString().trim());
         intent.putExtra("register", true);

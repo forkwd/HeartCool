@@ -229,8 +229,7 @@ public class AeroCardioLoginActivity extends BaseAppCompatActivity implements Vi
             return;
         }
         isFinish = true;
-        startActivity(new Intent(this, PersonalActivity.class));
-        this.finish();
+        startActivity(new Intent(this, AeroCardioPersonalActivity.class));
     }
 
     synchronized private void gotoMain() {
@@ -239,7 +238,7 @@ public class AeroCardioLoginActivity extends BaseAppCompatActivity implements Vi
         }
         isFinish = true;
         startActivity(new Intent(this, AeroCardioActivity.class));
-        this.finish();
+        finish();
     }
 
     synchronized private void gotoSetting() {
@@ -248,7 +247,7 @@ public class AeroCardioLoginActivity extends BaseAppCompatActivity implements Vi
         }
         isFinish = true;
         startActivity(new Intent(this, AeroCardioSettingActivity.class));
-        this.finish();
+        finish();
     }
 
 

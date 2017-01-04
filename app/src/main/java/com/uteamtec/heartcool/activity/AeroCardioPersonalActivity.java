@@ -32,7 +32,7 @@ import java.util.Date;
  * 个人信息
  * Created by wd
  */
-public class PersonalActivity extends BaseActivity implements View.OnClickListener {
+public class AeroCardioPersonalActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private String phone; // 手机号码
     private String password; // 密码
@@ -41,6 +41,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         phone = getIntent().getStringExtra("phone");
         if (TextUtils.isEmpty(phone)) {
             phone = User.getUser().getUsername();
@@ -60,7 +61,10 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         register = getIntent().getBooleanExtra("register", false);
 
         setContentView(R.layout.activity_personal);
+    }
 
+    @Override
+    protected void initViews() {
         findViewById(R.id.tx_personal_birthday).setOnClickListener(this);
         findViewById(R.id.btn_personal_save).setOnClickListener(this);
         findViewById(R.id.btn_personal_cancel).setOnClickListener(this);
@@ -81,6 +85,70 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                             }
                         }
                     });
+        }
+    }
+
+    @Override
+    protected boolean enableBackPressedFinish() {
+        return false;
+    }
+
+    @Override
+    protected boolean enableServiceConnection() {
+        return false;
+    }
+
+    @Override
+    public void onServiceConnected() {
+    }
+
+    @Override
+    public void onServiceDisconnected() {
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tx_personal_birthday:
+                DialogFragment dialogfragment = new PersonalDatePickerDialog();
+                dialogfragment.show(getFragmentManager(), "Theme");
+                break;
+            case R.id.btn_personal_save:
+                final String name = ((EditText) findViewById(R.id.et_personal_name)).getText().toString();
+                final String age = ((EditText) findViewById(R.id.et_personal_age)).getText().toString();
+                final String sex = ((RadioButton) findViewById(R.id.rb_personal_sex_male)).isChecked() ? "men" : "female";
+                final String birthday = ((TextView) findViewById(R.id.tx_personal_birthday)).getText().toString();
+                final String address = ((EditText) findViewById(R.id.et_personal_address)).getText().toString();
+
+                AppNetTcpComm.getUser().createUserOrUpdateByApp(
+                        phone,
+                        password,
+                        name,
+                        sex,
+                        birthday,
+                        age,
+                        address,
+                        new AppNetTcpCommListener<String>() {
+                            @Override
+                            public void onResponse(boolean success, String response) {
+                                L.e("createUserByApp -> success: " + success + " response:" + response);
+                                if (success) {
+                                    if (register) {
+                                        MobclickEvent.onEvent(AeroCardioPersonalActivity.this,
+                                                MobclickEvent.EventId_UserSignUp);
+                                    }
+                                    User.getUser().reset(response, "");
+                                    goMain();
+                                } else {
+                                    Toast.makeText(AeroCardioPersonalActivity.this,
+                                            R.string.http_conn_net, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                break;
+            case R.id.btn_personal_cancel:
+                onBackPressed();
+                break;
         }
     }
 
@@ -120,62 +188,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         ((EditText) findViewById(R.id.et_personal_address)).setText(response.optString("address", ""));
     }
 
-    @Override
-    public void onBackPressed() {
-        goBack();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tx_personal_birthday:
-                DialogFragment dialogfragment = new PersonalDatePickerDialog();
-                dialogfragment.show(getFragmentManager(), "Theme");
-                break;
-            case R.id.btn_personal_save:
-                final String name = ((EditText) findViewById(R.id.et_personal_name)).getText().toString();
-                final String age = ((EditText) findViewById(R.id.et_personal_age)).getText().toString();
-                final String sex = ((RadioButton) findViewById(R.id.rb_personal_sex_male)).isChecked() ? "men" : "female";
-                final String birthday = ((TextView) findViewById(R.id.tx_personal_birthday)).getText().toString();
-                final String address = ((EditText) findViewById(R.id.et_personal_address)).getText().toString();
-
-                AppNetTcpComm.getUser().createUserOrUpdateByApp(
-                        phone,
-                        password,
-                        name,
-                        sex,
-                        birthday,
-                        age,
-                        address,
-                        new AppNetTcpCommListener<String>() {
-                            @Override
-                            public void onResponse(boolean success, String response) {
-                                L.e("createUserByApp -> success: " + success + " response:" + response);
-                                if (success) {
-                                    if (register) {
-                                        MobclickEvent.onEvent(PersonalActivity.this,
-                                                MobclickEvent.EventId_UserSignUp);
-                                    }
-                                    User.getUser().reset(response, "");
-                                    goMain();
-                                } else {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(PersonalActivity.this,
-                                                    R.string.http_conn_net, Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                break;
-            case R.id.btn_personal_cancel:
-                goBack();
-                break;
-        }
-    }
-
     public static class PersonalDatePickerDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
         @Override
@@ -213,11 +225,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         } else {
             startActivity(new Intent(this, AeroCardioSettingActivity.class));
         }
-        finish();
-    }
-
-    private void goBack() {
-        startActivity(new Intent(this, AeroCardioLoginActivity.class));
         finish();
     }
 

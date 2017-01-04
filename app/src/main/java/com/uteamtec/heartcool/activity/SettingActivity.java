@@ -84,7 +84,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.activity_setting_rl_personal:// 个人信息监听
-                startActivity(new Intent(SettingActivity.this, PersonalActivity.class));
+                startActivity(new Intent(SettingActivity.this, AeroCardioPersonalActivity.class));
                 finish();
                 break;
             case R.id.activity_setting_rl_cache:////清除缓存监听
