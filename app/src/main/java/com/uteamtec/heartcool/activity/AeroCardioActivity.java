@@ -293,8 +293,7 @@ public class AeroCardioActivity extends BaseAppCompatActivity
 
     private void gotoPersonal() {
         BleFeComm.getClient().disconnect();
-        startActivity(new Intent(this, PersonalActivity.class));
-        finish();
+        startActivity(new Intent(this, AeroCardioPersonalActivity.class));
     }
 
     private void gotoLogin() {

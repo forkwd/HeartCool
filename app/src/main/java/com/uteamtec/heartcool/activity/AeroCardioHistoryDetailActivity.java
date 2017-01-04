@@ -52,7 +52,7 @@ public class AeroCardioHistoryDetailActivity extends BaseAppCompatActivity imple
         findViewById(R.id.history_detail_iv_share).setOnClickListener(this);
 
         TextView.class.cast(findViewById(R.id.history_detail_tv_detection_date)).
-                setText(detection.getDateStrCN() + " " +
+                setText(detection.getDateStrCN() + "\n" +
                         detection.getStartTimeStrCN() + " - " + detection.getStopTimeStrCN());
         TextView.class.cast(findViewById(R.id.history_detail_tv_detection_time)).
                 setText(detection.getDuration());
@@ -74,12 +74,7 @@ public class AeroCardioHistoryDetailActivity extends BaseAppCompatActivity imple
                                         }
                                     }
                                 }
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        showEcgMarks();
-                                    }
-                                });
+                                showEcgMarks();
                             } else {
                                 Toast.makeText(AeroCardioHistoryDetailActivity.this,
                                         R.string.http_conn_net, Toast.LENGTH_SHORT).show();

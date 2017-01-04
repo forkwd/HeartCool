@@ -12,8 +12,8 @@ import android.widget.Toast;
 import com.litesuits.orm.db.assit.QueryBuilder;
 import com.uteamtec.algorithm.types.Ecg;
 import com.uteamtec.heartcool.R;
-import com.uteamtec.heartcool.activity.AeroCardioSettingActivity;
 import com.uteamtec.heartcool.activity.AeroCardioHistoryDetailActivity;
+import com.uteamtec.heartcool.activity.AeroCardioSettingActivity;
 import com.uteamtec.heartcool.service.ble.BleFeComm;
 import com.uteamtec.heartcool.service.db.DBDetection;
 import com.uteamtec.heartcool.service.db.DBOrm;
@@ -200,7 +200,9 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
             L.e("AeroCardioFragment.NoDevice");
             startActivity(new Intent(getActivity(), AeroCardioSettingActivity.class));
             getActivity().finish();
+            return;
         }
+        refreshOnlineView();
     }
 
     private void startRecord() {
@@ -218,13 +220,38 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
     }
 
     private void refreshProgress() {
-        if (BleFeComm.getClient().isConnected()) {
-            ecgView.resumeDraw();
-            reconnectProgress.setVisibility(View.INVISIBLE);
-        } else {
-            ecgView.pauseDraw();
-            ecgView.resetData(LEN_DRAW_DATA);
-            reconnectProgress.setVisibility(View.VISIBLE);
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+//                    L.e("AeroCardioFragment.refreshProgress: " +
+//                            BleFeComm.getClient().isConnected());
+                    if (BleFeComm.getClient().isConnected()) {
+                        ecgView.resumeDraw();
+                        ecgView.setVisibility(View.VISIBLE);
+                        reconnectProgress.setVisibility(View.INVISIBLE);
+                    } else {
+                        ecgView.pauseDraw();
+                        ecgView.resetData(LEN_DRAW_DATA);
+                        ecgView.setVisibility(View.INVISIBLE);
+                        reconnectProgress.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+        }
+    }
+
+    private void refreshOnlineView() {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+//                    L.e("AeroCardioFragment.refreshOnlineView: " +
+//                            User.getUser().isConnectedDeviceAppNet());
+                    imgOnline.setVisibility(User.getUser().isConnectedDeviceAppNet() ?
+                            View.INVISIBLE : View.VISIBLE);
+                }
+            });
         }
     }
 
@@ -428,10 +455,12 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
     private UserStateChangedListener userStateChangedListener = new UserStateChangedListener() {
         @Override
         public void onDeviceRegistered(UserDevice device, int regResult) {
+            refreshOnlineView();
         }
 
         @Override
         public void onDeviceActivated(UserDevice device, int activateResult) {
+            refreshOnlineView();
         }
 
         @Override
@@ -440,29 +469,14 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
 
         @Override
         public void onAppStateChanged(final int state) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (state == User.APPSTATE_CONNECTED) {
-                        imgOnline.setVisibility(View.INVISIBLE);
-                    } else {
-                        imgOnline.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
+            L.e("AeroCardioFragment.onAppStateChanged state: " + state);
+            refreshOnlineView();
         }
 
         @Override
         public void onFeStateChanged(int state) {
             L.e("AeroCardioFragment.onFeStateChanged state: " + state);
-            if (getActivity() != null) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshProgress();
-                    }
-                });
-            }
+            refreshProgress();
         }
     };
 

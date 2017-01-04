@@ -268,7 +268,7 @@ public class LoginsActivity extends AppCompatActivity {
             return;
         }
         isFinish = true;
-        startActivity(new Intent(this, PersonalActivity.class));
+        startActivity(new Intent(this, AeroCardioPersonalActivity.class));
         this.finish();
     }
 

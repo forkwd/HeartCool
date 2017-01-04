@@ -7,7 +7,7 @@ android {
         applicationId 'com.uteamtec.heartcool'
         minSdkVersion 18
         targetSdkVersion 25
-        versionCode 6
+        versionCode 8
         versionName "1.4.5"
     }
     buildTypes {

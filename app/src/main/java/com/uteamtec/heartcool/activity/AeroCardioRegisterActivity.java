@@ -129,13 +129,11 @@ public class AeroCardioRegisterActivity extends BaseAppCompatActivity implements
      */
     private void checkVerify() {
         if (code.equals(etVerify.getText().toString().trim())) {
-            Toast.makeText(AeroCardioRegisterActivity.this,
-                    R.string.verify_code_success, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.verify_code_success, Toast.LENGTH_SHORT).show();
 
             gotoNext();
         } else {
-            Toast.makeText(AeroCardioRegisterActivity.this,
-                    R.string.verify_code_fail, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.verify_code_fail, Toast.LENGTH_SHORT).show();
         }
 //        AppNetTcpComm.getSms().verifyCode(
 //                etPhone.getText().toString(),

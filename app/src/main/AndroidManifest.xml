@@ -76,7 +76,7 @@
             android:name=".activity.AboutActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.PersonalActivity"
+            android:name=".activity.AeroCardioPersonalActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.AeroCardioHistoryDetailActivity"

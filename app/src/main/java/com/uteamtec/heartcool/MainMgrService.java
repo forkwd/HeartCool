@@ -396,13 +396,14 @@ public class MainMgrService extends Service {
 
                     User.getUser().updatePrevUserDevice(new UserDevice(dev));
 
-                    BleFeTxQueue.put(FeMessage.createRegAckMsg(User.getUser().getUserDevice())); //send back regAck to FE
-
-                    User.getUser().setFeState(User.FESTATE_REGISTERED);
-
+                    if (User.getUser().hasUserDevice()) {
+                        User.getUser().setFeState(User.FESTATE_REGISTERED);
+                        BleFeTxQueue.put(FeMessage.createRegAckMsg(User.getUser().getUserDevice())); //send back regAck to FE
+                        if (ListenerMgr.getUserStateChangedListener() != null) {
+                            ListenerMgr.getUserStateChangedListener().onFeStateChanged(User.FESTATE_REGISTERED);
+                        }
+                    }
                     if (ListenerMgr.getUserStateChangedListener() != null) {
-                        ListenerMgr.getUserStateChangedListener().onFeStateChanged(User.FESTATE_REGISTERED);
-
                         ListenerMgr.getUserStateChangedListener().onDeviceActivated(User.getUser().getUserDevice(),
                                 AppMessage.ACK_OK);
                     }
@@ -414,26 +415,24 @@ public class MainMgrService extends Service {
                 }
                 byte result = msg.getBody()[8];
                 if (result == AppMessage.ACK_OK) {
-//                    L.e("AppMessage.TYPE_ACTIVATE_ACK (success)");
+                    L.e("AppMessage.TYPE_REG_ACK (success)");
                     User.getUser().setConnectedDeviceAppNet(true);
 //                    ActivityStack.toast(R.string.online);
 
-                    UserDevice devConnected = User.getUser().getUserDevice();
+                    if (User.getUser().hasUserDevice()) {
+                        if (User.getUser().getFeState() == User.FESTATE_CONNECTED) {
+                            User.getUser().setFeState(User.FESTATE_REGISTERED);
 
-                    if (User.getUser().getFeState() == User.FESTATE_CONNECTED && devConnected != null) {
-                        User.getUser().setFeState(User.FESTATE_REGISTERED);
-
-                        L.i("<APP> device register, result = " + Byte.toString(result));
-                        User.getUser().setTimeLastRegAck(System.currentTimeMillis());
-                        BleFeTxQueue.put(FeMessage.createRegAckMsg(devConnected));
-
+                            User.getUser().setTimeLastRegAck(System.currentTimeMillis());
+                            BleFeTxQueue.put(FeMessage.createRegAckMsg(User.getUser().getUserDevice()));
+                        }
                         if (ListenerMgr.getUserStateChangedListener() != null) {
                             ListenerMgr.getUserStateChangedListener().onDeviceRegistered(User.getUser().getUserDevice(),
                                     AppMessage.ACK_OK);
                         }
-                    } // else do nothing when fe is not connected or registered
+                    }
                 } else {
-                    L.e("AppMessage.TYPE_ACTIVATE_ACK (failed)");
+                    L.e("AppMessage.TYPE_REG_ACK (failed)");
                     BleFeComm.getClient().reconnect();//if reg failed, break the link (so FE will reset itself)
                 }
                 break;
