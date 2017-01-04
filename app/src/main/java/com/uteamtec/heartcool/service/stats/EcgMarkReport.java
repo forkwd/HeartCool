@@ -30,7 +30,7 @@ public final class EcgMarkReport {
 
     public EcgMarkReport(EcgMarkAnalyzer analyzer) {
         if (analyzer != null) {
-            this.jlsj = DateFormats.YYYY_MM_DD_HH_MM_SS.format(new Date());
+            this.jlsj = DateFormats.YYYY_MM_DD_HH_MM_CN.format(new Date());
             this.jcsc = analyzer.getSecondsFormat();
 
             this.HR = analyzer.getAverageHR();
