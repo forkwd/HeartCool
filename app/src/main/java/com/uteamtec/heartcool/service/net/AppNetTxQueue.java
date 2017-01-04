@@ -2,7 +2,7 @@ package com.uteamtec.heartcool.service.net;
 
 import com.uteamtec.heartcool.MainConstant;
 import com.uteamtec.heartcool.messages.AppMessage;
-import com.uteamtec.heartcool.service.type.GlobalVar;
+import com.uteamtec.heartcool.service.type.User;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -39,7 +39,7 @@ public final class AppNetTxQueue {
     public static boolean put(AppMessage msg) {
         if (msg != null) {
             if (msg.getType() == AppMessage.TYPE_STREAM &&
-                    GlobalVar.getUser().isInterruptAppNetEcg()) {
+                    User.getUser().isInterruptAppNetEcg()) {
                 return true;
             }
             try {

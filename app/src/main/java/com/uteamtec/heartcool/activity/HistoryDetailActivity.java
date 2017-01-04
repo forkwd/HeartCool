@@ -14,8 +14,8 @@ import com.uteamtec.heartcool.service.net.AppNetTcpCommListener;
 import com.uteamtec.heartcool.service.share.ShareSDKUtils;
 import com.uteamtec.heartcool.service.type.EcgMark;
 import com.uteamtec.heartcool.service.type.EcgMarks;
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.MobclickEvent;
+import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.utils.L;
 
 import java.util.List;
@@ -58,7 +58,7 @@ public class HistoryDetailActivity extends BaseAppCompatActivity implements View
 
         if (detection.getMarks().isEmpty()) {
             AppNetTcpComm.getEcgMark().queryAppMarkCounts(
-                    GlobalVar.getUser().getIdString()
+                    User.getUser().getIdString()
                     , detection.getStartTime(), detection.getStopTime(),
                     new AppNetTcpCommListener<List<EcgMarks>>() {
                         @Override

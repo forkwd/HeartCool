@@ -30,7 +30,6 @@ import com.uteamtec.heartcool.service.net.AppNetTxCoder;
 import com.uteamtec.heartcool.service.net.AppNetTxQueue;
 import com.uteamtec.heartcool.service.net.AppNetTxThread;
 import com.uteamtec.heartcool.service.type.EcgMark;
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.service.type.UserDevice;
 import com.uteamtec.heartcool.service.type.UserSaveType;
@@ -106,7 +105,7 @@ public class MainMgrService extends Service {
         super.onCreate();
 
         // 0. initialize user
-        GlobalVar.getUser().reset();
+        User.getUser().reset();
 
         //1. initialize all queues
         //初始化各个数据缓存
@@ -210,9 +209,9 @@ public class MainMgrService extends Service {
 
 
         // start connection immediately after initialization
-        if (GlobalVar.getUser().hasPrevUserDevice()) {
-            if (BleFeComm.getClient().connect(GlobalVar.getUser().getPrevUserDevice().getMacAddr())) {
-                GlobalVar.getUser().setTimeLastConnectFe(System.currentTimeMillis());
+        if (User.getUser().hasPrevUserDevice()) {
+            if (BleFeComm.getClient().connect(User.getUser().getPrevUserDevice().getMacAddr())) {
+                User.getUser().setTimeLastConnectFe(System.currentTimeMillis());
             }
         }
 
@@ -252,26 +251,26 @@ public class MainMgrService extends Service {
     private void handleFeMessage(FeMessage msg) throws IOException {
 //        L.i("<SERVICE> app state = " + Integer.toString(UserMgr.getUser().getAppState()));
 //        L.e("<FeMessage> type = " + msg.getType());
-        synchronized (GlobalVar.getUser()) {
+        synchronized (User.getUser()) {
             switch (msg.getType()) {
                 case FeMessage.TYPE_STREAM_ECG_1:
                 case FeMessage.TYPE_STREAM_ECG_3:
                 case FeMessage.TYPE_STREAM_ECG_12:
                 case FeMessage.TYPE_STREAM_ECG_2:
-                    if (GlobalVar.getUser().getFeState() == User.FESTATE_REGISTERED) {
+                    if (User.getUser().getFeState() == User.FESTATE_REGISTERED) {
 //                        L.e("FeMessage.TYPE_STREAM_ECG (success)");
                         //only process data stream after device is registered
                         L.i("<BLE> <RX> received ECG, stamp = " + MessageUtils.bytesToUnsignedShort(msg.getBody(), 0) +
                                 " type = " + Integer.toString(msg.getType()));
 
-                        GlobalVar.getUser().resetLastFeMessageTime();
-                        if (!GlobalVar.getUser().isTimeInit()) {
+                        User.getUser().resetLastFeMessageTime();
+                        if (!User.getUser().isTimeInit()) {
                             //我们只在每一次建立连接后接收到第一个ecg数据的时候才进行时间标识，之后直到连接中断都不再获取系统时间
                             //这里很关键，第一数据接收设定起始，之后按照设备的sps和数据单元大小计算后续ecg数据流的时间，可以避免时间与数据不匹配
-                            GlobalVar.getUser().setIsTimeInit(true);
+                            User.getUser().setIsTimeInit(true);
                             try {
 //                                L.i("<BLE> init ECG after the connection");
-                                EcgQueue.getRaw().put(msg.extractInitEcg(GlobalVar.getUser(),
+                                EcgQueue.getRaw().put(msg.extractInitEcg(User.getUser(),
                                         System.currentTimeMillis())); //每次建立连接之后的第一个ECG数据
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -279,7 +278,7 @@ public class MainMgrService extends Service {
                         } else {
                             try {
 //                                L.i("<BLE> normal ECG");
-                                EcgQueue.getRaw().put(msg.extractEcg(GlobalVar.getUser()));
+                                EcgQueue.getRaw().put(msg.extractEcg(User.getUser()));
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -291,9 +290,9 @@ public class MainMgrService extends Service {
 
                     break;
                 case FeMessage.TYPE_STATUS:
-                    if (GlobalVar.getUser().getFeState() == User.FESTATE_REGISTERED) {
+                    if (User.getUser().getFeState() == User.FESTATE_REGISTERED) {
                         L.e("FeMessage.TYPE_STATUS (success)");
-                        GlobalVar.getUser().resetLastFeMessageTime();
+                        User.getUser().resetLastFeMessageTime();
                         long timeNow = System.currentTimeMillis();
 //                        String str = "";
 //                        for (int m = 0; m < msg.getBody().length; m ++) {
@@ -309,8 +308,8 @@ public class MainMgrService extends Service {
                     }
                     break;
                 case FeMessage.TYPE_REGISTER:
-                    GlobalVar.getUser().resetLastFeMessageTime();
-                    GlobalVar.getUser().setIsDevReset(true); //device is reset
+                    User.getUser().resetLastFeMessageTime();
+                    User.getUser().setIsDevReset(true); //device is reset
 
                     UserDevice newDev = msg.extractDevice();
                     BleFeTxCoder.getCoder().setStreamLength(newDev.getStreamLen());
@@ -327,27 +326,27 @@ public class MainMgrService extends Service {
                         EcgDataPostProcessThread.setResolution(3);
                     }
 
-                    UserDevice oldDev = GlobalVar.getUser().getUserDevices().get(newDev.getMacAddr());
+                    UserDevice oldDev = User.getUser().getUserDevices().get(newDev.getMacAddr());
                     if (oldDev != null) {
-                        GlobalVar.getUser().updateUserDevice(oldDev);
+                        User.getUser().updateUserDevice(oldDev);
                         L.e("FeMessage.TYPE_REGISTER -> oldDev: " + oldDev.toString());
-                        GlobalVar.getUser().save(UserSaveType.Device);
+                        User.getUser().save(UserSaveType.Device);
 
                         AppNetTxQueue.put(AppMessage.createRegMessage(oldDev));
 
-                        if (true && !GlobalVar.getUser().isConnectedDeviceAppNet()) {// TODO: 允许离线方案
-                            GlobalVar.getUser().setFeState(User.FESTATE_REGISTERED);
-                            BleFeTxQueue.put(FeMessage.createRegAckMsg(GlobalVar.getUser().getUserDevice()));
+                        if (true && !User.getUser().isConnectedDeviceAppNet()) {// TODO: 允许离线方案
+                            User.getUser().setFeState(User.FESTATE_REGISTERED);
+                            BleFeTxQueue.put(FeMessage.createRegAckMsg(User.getUser().getUserDevice()));
                         }
                     } else {// 如果是新设备，先获取key，然后在获取到key之后返回给fe
-                        GlobalVar.getUser().updateUserDevice(newDev);
+                        User.getUser().updateUserDevice(newDev);
                         L.e("FeMessage.TYPE_REGISTER -> newDev: " + newDev.toString());
 
                         AppNetTxQueue.put(AppMessage.createActivateMessage(newDev));
 
-                        if (true && !GlobalVar.getUser().isConnectedDeviceAppNet()) {// TODO: 允许离线方案
-                            GlobalVar.getUser().setFeState(User.FESTATE_REGISTERED);
-                            BleFeTxQueue.put(FeMessage.createRegAckMsg(GlobalVar.getUser().getUserDevice()));
+                        if (true && !User.getUser().isConnectedDeviceAppNet()) {// TODO: 允许离线方案
+                            User.getUser().setFeState(User.FESTATE_REGISTERED);
+                            BleFeTxQueue.put(FeMessage.createRegAckMsg(User.getUser().getUserDevice()));
                         }
                     }
                     // TODO: >>>>>>>>>>>>不然会一直TYPE_REGISTER
@@ -358,9 +357,9 @@ public class MainMgrService extends Service {
                     break;
                 case FeMessage.TYPE_USERINPUT:
                     L.i("<BLE> <RX> userinput");
-                    if (GlobalVar.getUser().getFeState() == User.FESTATE_REGISTERED) {
+                    if (User.getUser().getFeState() == User.FESTATE_REGISTERED) {
                         L.e("FeMessage.TYPE_USERINPUT (success)");
-                        GlobalVar.getUser().resetLastFeMessageTime();
+                        User.getUser().resetLastFeMessageTime();
                         EcgMarkQueue.put(msg.extractMark(System.currentTimeMillis()));
                     } else {
                         L.e("FeMessage.TYPE_USERINPUT (failed)");
@@ -393,19 +392,19 @@ public class MainMgrService extends Service {
                     BleFeComm.getClient().reconnect();// if reg failed, break the link (so FE will reset itself)
                 } else {
                     L.e("AppMessage.TYPE_ACTIVATE_ACK (success) -> dev: " + dev.toString());
-                    GlobalVar.getUser().setConnectedDeviceAppNet(true);
+                    User.getUser().setConnectedDeviceAppNet(true);
                     ActivityStack.toast(R.string.online);
 
-                    GlobalVar.getUser().updatePrevUserDevice(new UserDevice(dev));
+                    User.getUser().updatePrevUserDevice(new UserDevice(dev));
 
-                    BleFeTxQueue.put(FeMessage.createRegAckMsg(GlobalVar.getUser().getUserDevice())); //send back regAck to FE
+                    BleFeTxQueue.put(FeMessage.createRegAckMsg(User.getUser().getUserDevice())); //send back regAck to FE
 
-                    GlobalVar.getUser().setFeState(User.FESTATE_REGISTERED);
+                    User.getUser().setFeState(User.FESTATE_REGISTERED);
 
                     if (ListenerMgr.getUserStateChangedListener() != null) {
                         ListenerMgr.getUserStateChangedListener().onFeStateChanged(User.FESTATE_REGISTERED);
 
-                        ListenerMgr.getUserStateChangedListener().onDeviceActivated(GlobalVar.getUser().getUserDevice(),
+                        ListenerMgr.getUserStateChangedListener().onDeviceActivated(User.getUser().getUserDevice(),
                                 AppMessage.ACK_OK);
                     }
                 }
@@ -417,20 +416,20 @@ public class MainMgrService extends Service {
                 byte result = msg.getBody()[8];
                 if (result == AppMessage.ACK_OK) {
 //                    L.e("AppMessage.TYPE_ACTIVATE_ACK (success)");
-                    GlobalVar.getUser().setConnectedDeviceAppNet(true);
+                    User.getUser().setConnectedDeviceAppNet(true);
                     ActivityStack.toast(R.string.online);
 
-                    UserDevice devConnected = GlobalVar.getUser().getUserDevice();
+                    UserDevice devConnected = User.getUser().getUserDevice();
 
-                    if (GlobalVar.getUser().getFeState() == User.FESTATE_CONNECTED && devConnected != null) {
-                        GlobalVar.getUser().setFeState(User.FESTATE_REGISTERED);
+                    if (User.getUser().getFeState() == User.FESTATE_CONNECTED && devConnected != null) {
+                        User.getUser().setFeState(User.FESTATE_REGISTERED);
 
                         L.i("<APP> device register, result = " + Byte.toString(result));
-                        GlobalVar.getUser().setTimeLastRegAck(System.currentTimeMillis());
+                        User.getUser().setTimeLastRegAck(System.currentTimeMillis());
                         BleFeTxQueue.put(FeMessage.createRegAckMsg(devConnected));
 
                         if (ListenerMgr.getUserStateChangedListener() != null) {
-                            ListenerMgr.getUserStateChangedListener().onDeviceRegistered(GlobalVar.getUser().getUserDevice(),
+                            ListenerMgr.getUserStateChangedListener().onDeviceRegistered(User.getUser().getUserDevice(),
                                     AppMessage.ACK_OK);
                         }
                     } // else do nothing when fe is not connected or registered
@@ -443,11 +442,11 @@ public class MainMgrService extends Service {
                 byte[] body = msg.getBody();
                 if (body != null && body.length > 8 && body[8] == AppMessage.ACK_OK) {
                     L.e("AppMessage.TYPE_LOGIN_ACK (success)");
-                    GlobalVar.getUser().setAppState(User.APPSTATE_LOGIN);
+                    User.getUser().setAppState(User.APPSTATE_LOGIN);
 
-                    if (GlobalVar.getUser().hasUserDevice()) {
+                    if (User.getUser().hasUserDevice()) {
                         // if device is connected prior to login
-                        AppNetTxQueue.put(AppMessage.createRegMessage(GlobalVar.getUser().getUserDevice()));
+                        AppNetTxQueue.put(AppMessage.createRegMessage(User.getUser().getUserDevice()));
                     }
                     /*
                      * login callback
@@ -474,7 +473,7 @@ public class MainMgrService extends Service {
             default:
                 return;
         }
-        GlobalVar.getUser().resetLastAppNetMessageTime();
+        User.getUser().resetLastAppNetMessageTime();
     }
 
 }

@@ -11,7 +11,7 @@ import com.uteamtec.heartcool.service.listener.ListenerMgr;
 import com.uteamtec.heartcool.service.stats.EcgMarkReport;
 import com.uteamtec.heartcool.service.stats.EcgStats;
 import com.uteamtec.heartcool.service.type.EcgMark;
-import com.uteamtec.heartcool.service.type.GlobalVar;
+import com.uteamtec.heartcool.service.type.User;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,13 +30,13 @@ public final class DetectionService {
 
     private DetectionService() {
         stats = new EcgStats();
-        detection = new DBDetection(GlobalVar.getUser().getIdString(),
+        detection = new DBDetection(User.getUser().getIdString(),
                 BleFeComm.getClient().getMacAddress());
     }
 
     private void reset() {
         stats.clear();
-        detection = new DBDetection(GlobalVar.getUser().getIdString(),
+        detection = new DBDetection(User.getUser().getIdString(),
                 BleFeComm.getClient().getMacAddress());
     }
 

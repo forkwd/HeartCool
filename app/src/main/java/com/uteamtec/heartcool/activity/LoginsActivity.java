@@ -15,10 +15,9 @@ import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 import com.uteamtec.heartcool.R;
-import com.uteamtec.heartcool.model.User;
 import com.uteamtec.heartcool.service.net.AppNetTcpComm;
 import com.uteamtec.heartcool.service.net.AppNetTcpCommListener;
-import com.uteamtec.heartcool.service.type.GlobalVar;
+import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.service.type.UserDevice;
 import com.uteamtec.heartcool.service.type.UserSaveType;
 import com.uteamtec.heartcool.utils.ApiUrl;
@@ -147,19 +146,19 @@ public class LoginsActivity extends AppCompatActivity {
                         JSONArray array = object.getJSONArray("cms");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject obj = array.getJSONObject(i);
-                            User user = new User();
-                            String uid = obj.getString("uid");
-                            user.setUid(uid);
-                            user.setUser(obj.getString("user"));
-                            User.getInstance().setUid(uid);//获取uid
+//                            User user = new User();
+//                            String uid = obj.getString("uid");
+//                            user.setUid(uid);
+//                            user.setUser(obj.getString("user"));
+//                            User.getInstance().setUid(uid);//获取uid
                         }
                         Toast.makeText(LoginsActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
 
-                        GlobalVar.getUser().setUsername(et_login_number.getText().toString());
-                        GlobalVar.getUser().setPassword(et_login_pwd.getText().toString());
-                        GlobalVar.getUser().save(UserSaveType.Login);
+                        User.getUser().setUsername(et_login_number.getText().toString());
+                        User.getUser().setPassword(et_login_pwd.getText().toString());
+                        User.getUser().save(UserSaveType.Login);
 
-                        MobclickAgent.onProfileSignIn(GlobalVar.getUser().getUsername());
+                        MobclickAgent.onProfileSignIn(User.getUser().getUsername());
 
                         AppNetTcpComm.getUser().isExistTelephone(
                                 et_login_number.getText().toString(),
@@ -176,7 +175,7 @@ public class LoginsActivity extends AppCompatActivity {
                                                             public void onResponse(boolean success, String response) {
                                                                 L.e("queryInfoIdByAppUserCode -> success: " + success + " response:" + response);
                                                                 if (success) {
-                                                                    GlobalVar.getUser().reset(response, "");
+                                                                    User.getUser().reset(response, "");
                                                                     loginSuccess();
                                                                 } else {
                                                                     Toast.makeText(LoginsActivity.this,
@@ -241,18 +240,18 @@ public class LoginsActivity extends AppCompatActivity {
     }
 
     private void loginSuccess() {
-        if (GlobalVar.getUser().hasPrevUserDevice()) {
+        if (User.getUser().hasPrevUserDevice()) {
             gotoMain();
         } else {
             AppNetTcpComm.getInfo().queryBindDeviceByInfoId(
-                    GlobalVar.getUser().getIdString(),
+                    User.getUser().getIdString(),
                     new AppNetTcpCommListener<UserDevice>() {
                         @Override
                         public void onResponse(boolean success, UserDevice response) {
                             L.e("queryBindDeviceByInfoId -> success: " + success);
                             if (success && response != null) {
                                 L.e("queryBindDeviceByInfoId -> response:" + response.toString());
-                                GlobalVar.getUser().updateUserDevice(response);
+                                User.getUser().updateUserDevice(response);
                                 gotoMain();
                             } else {
                                 gotoSetting();

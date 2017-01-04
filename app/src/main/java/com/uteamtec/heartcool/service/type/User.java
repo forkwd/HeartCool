@@ -17,7 +17,7 @@ public final class User extends com.uteamtec.algorithm.types.User implements Ser
 
     private static User _user;
 
-    protected static User getUser() {
+    public static User getUser() {
         if (_user == null) {
             synchronized (User.class) {
                 if (_user == null) {

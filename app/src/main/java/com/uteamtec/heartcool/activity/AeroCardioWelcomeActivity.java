@@ -7,8 +7,12 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.uteamtec.heartcool.R;
+import com.uteamtec.heartcool.service.net.AppNetTcpComm;
+import com.uteamtec.heartcool.service.net.AppNetTcpCommListener;
 import com.uteamtec.heartcool.service.type.Config;
-import com.uteamtec.heartcool.service.type.GlobalVar;
+import com.uteamtec.heartcool.service.type.User;
+import com.uteamtec.heartcool.service.type.UserDevice;
+import com.uteamtec.heartcool.utils.L;
 
 /**
  * 欢迎页面
@@ -31,18 +35,18 @@ public class AeroCardioWelcomeActivity extends BaseAppCompatActivity {
     @Override
     protected void initViews() {
         // 默认是第一次进入应用
-//                if (Config.getBoolean(Config.Info, Config.PREF_APP_FIRST, true)) {
-//                }
-        Config.putBoolean(Config.Info, Config.PREF_APP_FIRST, false);
-
-        // 设置是否自动登录
-        Config.putBoolean(Config.Info, Config.PREF_LOGIN_AUTO,
-                !TextUtils.isEmpty(GlobalVar.getUser().getPassword()));
+        if (Config.getBoolean(Config.Info, Config.PREF_APP_FIRST, true)) {
+            Config.putBoolean(Config.Info, Config.PREF_APP_FIRST, false);
+        }
 
         new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                gotoLogin();
+                if (User.getUser().getId() != null) {
+                    autoLogin();
+                } else {
+                    gotoLogin();
+                }
                 return false;
             }
         }).sendEmptyMessageDelayed(0, 1000);
@@ -66,14 +70,50 @@ public class AeroCardioWelcomeActivity extends BaseAppCompatActivity {
     public void onServiceDisconnected() {
     }
 
+    private void autoLogin() {
+        if (User.getUser().hasPrevUserDevice()) {
+            gotoMain();
+        } else {
+            AppNetTcpComm.getInfo().queryBindDeviceByInfoId(
+                    User.getUser().getIdString(),
+                    new AppNetTcpCommListener<UserDevice>() {
+                        @Override
+                        public void onResponse(boolean success, UserDevice response) {
+                            L.e("queryBindDeviceByInfoId -> success: " + success);
+                            if (success && response != null) {
+                                L.e("queryBindDeviceByInfoId -> response:" + response.toString());
+                                User.getUser().updateUserDevice(response);
+                                gotoMain();
+                            } else {
+                                gotoSetting();
+                            }
+                        }
+                    });
+        }
+    }
+
     private void gotoNetTest() {
         startActivity(new Intent(this, TestAppNetActivity.class));
         finish();
     }
 
     private void gotoLogin() {
+        // 设置是否自动登录
+        Config.putBoolean(Config.Info, Config.PREF_LOGIN_AUTO,
+                !TextUtils.isEmpty(User.getUser().getPassword()));
+
         startActivity(new Intent(this, AeroCardioLoginActivity.class));
         finish();
+    }
+
+    private void gotoMain() {
+        startActivity(new Intent(this, AeroCardioActivity.class));
+        this.finish();
+    }
+
+    private void gotoSetting() {
+        startActivity(new Intent(this, AeroCardioSettingActivity.class));
+        this.finish();
     }
 
 }

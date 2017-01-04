@@ -2,7 +2,7 @@ package com.uteamtec.heartcool.service.stats;
 
 import com.uteamtec.heartcool.service.listener.ListenerMgr;
 import com.uteamtec.heartcool.service.type.EcgMark;
-import com.uteamtec.heartcool.service.type.GlobalVar;
+import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.service.type.UserDevice;
 import com.uteamtec.heartcool.utils.L;
 
@@ -134,9 +134,9 @@ public final class EcgMarkAnalyzer {
                 switch (m.getType()) {
                     case EcgMark.STATUS_LEADOFF:
                         String msg = "导联脱落";
-                        if (GlobalVar.getUser().getUserDevice().getModel() == UserDevice.MODEL_20_1) {
+                        if (User.getUser().getUserDevice().getModel() == UserDevice.MODEL_20_1) {
                             msg = "导联脱落";
-                        } else if (GlobalVar.getUser().getUserDevice().getModel() == UserDevice.MODEL_20_3) {
+                        } else if (User.getUser().getUserDevice().getModel() == UserDevice.MODEL_20_3) {
                             boolean chn1Off = ((VALUE & 0x01) == 1);
                             boolean chn2Off = ((VALUE & 0x02) == 2);
                             boolean chn3Off = ((VALUE & 0x04) == 4);

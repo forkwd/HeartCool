@@ -3,7 +3,6 @@ package com.uteamtec.heartcool.service.ble;
 import com.inuker.bluetooth.library.model.BleGattProfile;
 import com.uteamtec.heartcool.service.ecg.EcgDataPostProcessThread;
 import com.uteamtec.heartcool.service.listener.ListenerMgr;
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.service.type.UserDevice;
 import com.uteamtec.heartcool.utils.L;
@@ -29,20 +28,20 @@ public final class BleFeComm {
         BleManager.getState().setListener(new BleStateListener() {
             @Override
             public void onBluetoothEnabled() {
-                if (GlobalVar.getUser().getFeState() == User.FESTATE_DISABLED) {
+                if (User.getUser().getFeState() == User.FESTATE_DISABLED) {
                     //only invoked when turn ble on
-                    GlobalVar.getUser().setFeState(User.FESTATE_DISCONNECTED);
+                    User.getUser().setFeState(User.FESTATE_DISCONNECTED);
                     if (ListenerMgr.getUserStateChangedListener() != null) {
-                        ListenerMgr.getUserStateChangedListener().onFeStateChanged(GlobalVar.getUser().getFeState());
+                        ListenerMgr.getUserStateChangedListener().onFeStateChanged(User.getUser().getFeState());
                     }
                 }
             }
 
             @Override
             public void onBluetoothDisabled() {
-                GlobalVar.getUser().setFeState(User.FESTATE_DISABLED);
+                User.getUser().setFeState(User.FESTATE_DISABLED);
                 if (ListenerMgr.getUserStateChangedListener() != null) {
-                    ListenerMgr.getUserStateChangedListener().onFeStateChanged(GlobalVar.getUser().getFeState());
+                    ListenerMgr.getUserStateChangedListener().onFeStateChanged(User.getUser().getFeState());
                 }
             }
         });
@@ -74,46 +73,46 @@ public final class BleFeComm {
             public void onConnecting() {
                 onDisconnected();
                 L.e("onConnecting");
-                GlobalVar.getUser().setFeState(User.FESTATE_CONNECTING);
+                User.getUser().setFeState(User.FESTATE_CONNECTING);
                 if (ListenerMgr.getUserStateChangedListener() != null) {
-                    ListenerMgr.getUserStateChangedListener().onFeStateChanged(GlobalVar.getUser().getFeState());
+                    ListenerMgr.getUserStateChangedListener().onFeStateChanged(User.getUser().getFeState());
                 }
             }
 
             @Override
             public void onConnected() {
                 L.e("onConnected");
-                GlobalVar.getUser().setFeState(User.FESTATE_CONNECTED);
+                User.getUser().setFeState(User.FESTATE_CONNECTED);
                 L.i("<BLE> FE connected");
 
-                GlobalVar.getUser().resetLastFeMessageTime();
-                GlobalVar.getUser().setIsDevReset(false); //when connected, device is assumed to be not resetted
+                User.getUser().resetLastFeMessageTime();
+                User.getUser().setIsDevReset(false); //when connected, device is assumed to be not resetted
 
                 BleFePulseTxThread.startThread();
 
                 if (ListenerMgr.getUserStateChangedListener() != null) {
-                    ListenerMgr.getUserStateChangedListener().onFeStateChanged(GlobalVar.getUser().getFeState());
+                    ListenerMgr.getUserStateChangedListener().onFeStateChanged(User.getUser().getFeState());
                 }
             }
 
             @Override
             public void onDisconnecting() {
                 L.e("onDisconnecting");
-                GlobalVar.getUser().setFeState(User.FESTATE_DISCONNECTING);
+                User.getUser().setFeState(User.FESTATE_DISCONNECTING);
 
                 if (ListenerMgr.getUserStateChangedListener() != null) {
-                    ListenerMgr.getUserStateChangedListener().onFeStateChanged(GlobalVar.getUser().getFeState());
+                    ListenerMgr.getUserStateChangedListener().onFeStateChanged(User.getUser().getFeState());
                 }
             }
 
             @Override
             public void onDisconnected() {
                 L.e("onDisconnected");
-                GlobalVar.getUser().setFeState(User.FESTATE_DISCONNECTED);
+                User.getUser().setFeState(User.FESTATE_DISCONNECTED);
 
                 //unregister previous connected device
-                GlobalVar.getUser().setIsTimeInit(false); //set false here so the next connection will re-initialized the time
-                GlobalVar.getUser().setUserDevice(null); //if null, blecomm should keep last time connection
+                User.getUser().setIsTimeInit(false); //set false here so the next connection will re-initialized the time
+                User.getUser().setUserDevice(null); //if null, blecomm should keep last time connection
                 //invalidate datapostprocess
                 EcgDataPostProcessThread.setResolution(0);
 
@@ -126,7 +125,7 @@ public final class BleFeComm {
                 BleFePulseTxThread.stopThread();
 
                 if (ListenerMgr.getUserStateChangedListener() != null) {
-                    ListenerMgr.getUserStateChangedListener().onFeStateChanged(GlobalVar.getUser().getFeState());
+                    ListenerMgr.getUserStateChangedListener().onFeStateChanged(User.getUser().getFeState());
                 }
             }
 
@@ -193,14 +192,14 @@ public final class BleFeComm {
      * 获取蓝牙设备列表
      */
     public static List<UserDevice> getBoundedDevices() {
-        return GlobalVar.getUser().getUserDevices().getListDevices();
+        return User.getUser().getUserDevices().getListDevices();
     }
 
     /**
      * 获取连接的蓝牙设备
      */
     public static UserDevice getUserDevice() {
-        return GlobalVar.getUser().getUserDevice();
+        return User.getUser().getUserDevice();
     }
 
 }
