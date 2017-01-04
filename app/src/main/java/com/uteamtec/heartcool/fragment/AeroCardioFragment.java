@@ -13,7 +13,7 @@ import com.litesuits.orm.db.assit.QueryBuilder;
 import com.uteamtec.algorithm.types.Ecg;
 import com.uteamtec.heartcool.R;
 import com.uteamtec.heartcool.activity.AeroCardioSettingActivity;
-import com.uteamtec.heartcool.activity.HistoryDetailActivity;
+import com.uteamtec.heartcool.activity.AeroCardioHistoryDetailActivity;
 import com.uteamtec.heartcool.service.ble.BleFeComm;
 import com.uteamtec.heartcool.service.db.DBDetection;
 import com.uteamtec.heartcool.service.db.DBOrm;
@@ -169,7 +169,7 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
                                         .appendOrderDescBy("id").limit("1")
                         );
                         if (getActivity() != null && ds != null && ds.size() > 0) {
-                            Intent intent = new Intent(getActivity(), HistoryDetailActivity.class);
+                            Intent intent = new Intent(getActivity(), AeroCardioHistoryDetailActivity.class);
                             intent.putExtra(DBDetection.class.getSimpleName(), ds.get(0));
                             getActivity().startActivity(intent);
                         }

@@ -22,9 +22,10 @@ import java.util.List;
 import java.util.Locale;
 
 /**
+ * 历史详情页面
  * Created by wd
  */
-public class HistoryDetailActivity extends BaseAppCompatActivity implements View.OnClickListener {
+public class AeroCardioHistoryDetailActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private DBDetection detection;
 
@@ -51,8 +52,8 @@ public class HistoryDetailActivity extends BaseAppCompatActivity implements View
         findViewById(R.id.history_detail_iv_share).setOnClickListener(this);
 
         TextView.class.cast(findViewById(R.id.history_detail_tv_detection_date)).
-                setText(detection.getDate() + " " +
-                        detection.getStartTimeStr() + " - " + detection.getStopTimeStr());
+                setText(detection.getDateStrCN() + " " +
+                        detection.getStartTimeStrCN() + " - " + detection.getStopTimeStrCN());
         TextView.class.cast(findViewById(R.id.history_detail_tv_detection_time)).
                 setText(detection.getDuration());
 
@@ -80,7 +81,7 @@ public class HistoryDetailActivity extends BaseAppCompatActivity implements View
                                     }
                                 });
                             } else {
-                                Toast.makeText(HistoryDetailActivity.this,
+                                Toast.makeText(AeroCardioHistoryDetailActivity.this,
                                         R.string.http_conn_net, Toast.LENGTH_SHORT).show();
                             }
                         }

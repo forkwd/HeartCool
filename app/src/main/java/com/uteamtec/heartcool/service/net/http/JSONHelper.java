@@ -2,6 +2,8 @@ package com.uteamtec.heartcool.service.net.http;
 
 import android.util.Log;
 
+import com.uteamtec.heartcool.service.utils.DateFormats;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,7 +14,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -20,7 +21,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -162,8 +162,7 @@ public final class JSONHelper {
                     Object fieldVal = fieldGetMet.invoke(obj, new Object[]{});
                     String result = null;
                     if ("Date".equals(fieldType)) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-                        result = sdf.format((Date) fieldVal);
+                        result = DateFormats.YYYY_MM_DD_HH_MM_SS.format((Date) fieldVal);
 
                     } else {
                         if (null != fieldVal) {
@@ -238,8 +237,7 @@ public final class JSONHelper {
                     if ("String".equals(fieldType)) {
                         fieldMethod.invoke(obj, value);
                     } else if ("Date".equals(fieldType)) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-                        Date temp = sdf.parse(value);
+                        Date temp = DateFormats.YYYY_MM_DD_HH_MM_SS.parse(value);
                         fieldMethod.invoke(obj, temp);
                     } else if ("Integer".equals(fieldType)
                             || "int".equals(fieldType)) {
@@ -288,8 +286,7 @@ public final class JSONHelper {
                 Object fieldVal = fieldGetMet.invoke(obj, new Object[]{});
                 String result = null;
                 if ("Date".equals(fieldType)) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-                    result = sdf.format((Date) fieldVal);
+                    result = DateFormats.YYYY_MM_DD_HH_MM_SS.format((Date) fieldVal);
 
                 } else {
                     if (null != fieldVal) {
@@ -320,8 +317,7 @@ public final class JSONHelper {
                 if ("String".equals(fieldType)) {
                     fieldSetMethod.invoke(obj, value.toString());
                 } else if ("Date".equals(fieldType)) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-                    Date temp = sdf.parse(value.toString());
+                    Date temp = DateFormats.YYYY_MM_DD_HH_MM_SS.parse(value.toString());
                     fieldSetMethod.invoke(obj, temp);
                 } else if ("Integer".equals(fieldType)
                         || "int".equals(fieldType)) {

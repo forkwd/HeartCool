@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.litesuits.orm.db.assit.QueryBuilder;
 import com.uteamtec.heartcool.R;
-import com.uteamtec.heartcool.activity.HistoryDetailActivity;
+import com.uteamtec.heartcool.activity.AeroCardioHistoryDetailActivity;
 import com.uteamtec.heartcool.fragment.model.HistoryCalendarItemAdapter;
 import com.uteamtec.heartcool.fragment.model.HistoryCalendarItemModel;
 import com.uteamtec.heartcool.fragment.model.HistoryListItemAdapter;
@@ -243,7 +243,7 @@ public abstract class HistoryFragment extends BaseFragment implements View.OnCli
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(getActivity(), HistoryDetailActivity.class);
+                Intent intent = new Intent(getActivity(), AeroCardioHistoryDetailActivity.class);
                 if (detection.getId() > 0) {
                     intent.putExtra(DBDetection.class.getSimpleName(),
                             DBOrm.cascadeQueryById(detection.getId(), DBDetection.class));

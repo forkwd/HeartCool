@@ -8,7 +8,6 @@ import com.litesuits.orm.db.enums.Relation;
 import com.uteamtec.heartcool.service.stats.EcgMarkReport;
 import com.uteamtec.heartcool.service.utils.DateFormats;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -164,12 +163,25 @@ public class DBDetection extends DBModel {
         return date;
     }
 
+    public String getDateStrCN() {
+        if (startTime > 0) {
+            return DateFormats.YYYY_MM_DD_CN.format(new Date(startTime));
+        } else if (stopTime > 0) {
+            return DateFormats.YYYY_MM_DD_CN.format(new Date(stopTime));
+        }
+        return getDate();
+    }
+
     public long getStartTime() {
         return startTime;
     }
 
     public String getStartTimeStr() {
-        return new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date(startTime));
+        return DateFormats.HH_MM_SS.format(new Date(startTime));
+    }
+
+    public String getStartTimeStrCN() {
+        return DateFormats.HH_MM_SS_CN.format(new Date(startTime));
     }
 
     public long getStopTime() {
@@ -177,7 +189,11 @@ public class DBDetection extends DBModel {
     }
 
     public String getStopTimeStr() {
-        return new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date(stopTime));
+        return DateFormats.HH_MM_SS.format(new Date(stopTime));
+    }
+
+    public String getStopTimeStrCN() {
+        return DateFormats.HH_MM_SS_CN.format(new Date(stopTime));
     }
 
     public String getDuration() {

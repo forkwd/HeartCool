@@ -38,6 +38,7 @@ import com.uteamtec.heartcool.service.stats.EcgMarkReport;
 import com.uteamtec.heartcool.service.type.EcgMark;
 import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.service.type.UserDevice;
+import com.uteamtec.heartcool.service.utils.DateFormats;
 import com.uteamtec.heartcool.utils.CrashHandler;
 import com.uteamtec.heartcool.utils.L;
 import com.uteamtec.heartcool.views.types.Record;
@@ -45,11 +46,9 @@ import com.uteamtec.heartcool.views.widget.EcgView;
 import com.uteamtec.heartcool.views.widget.RingMeterView;
 import com.uteamtec.heartcool.views.widget.WarningView;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -420,7 +419,7 @@ public class MainAeroCardioActivity extends BaseActivity {
         suspectedRisk_tv = (TextView) findViewById(R.id.suspectedRisk_tv);//实时呼吸率
         detection_time_tv = (TextView) findViewById(R.id.detection_time_tv);//当天时间
         txTimer = (TextView) findViewById(R.id.main_tx_timer);// 记录时间
-        detection_time_tv.setText(new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(new Date()));
+        detection_time_tv.setText(DateFormats.YYYY_MM_CN.format(new Date()));
 
         mWarningViewHard = (WarningView) findViewById(R.id.wv_hard);
         mWarningViewSoft = (WarningView) findViewById(R.id.wv_soft);
