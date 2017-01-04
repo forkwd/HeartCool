@@ -145,20 +145,48 @@ public class AeroCardioHistoryDetailActivity extends BaseAppCompatActivity imple
         TextView.class.cast(findViewById(R.id.history_detail_tv_heart_health)).
                 setText(String.valueOf(detection.getMarkStats().getHRHealth()));
 
-        TextView.class.cast(findViewById(R.id.history_detail_tv_arrhythmia)).
-                setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getXLBQ()));
-        TextView.class.cast(findViewById(R.id.history_detail_tv_heart_rate_fast)).
-                setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getXLGS()));
-        TextView.class.cast(findViewById(R.id.history_detail_tv_heart_rate_slow)).
-                setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getXLGH()));
-        TextView.class.cast(findViewById(R.id.history_detail_tv_ventricular_premature_beat)).
-                setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getSXZB()));
-        TextView.class.cast(findViewById(R.id.history_detail_tv_room_sex_premature_beat)).
-                setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getFXZB()));
-        TextView.class.cast(findViewById(R.id.history_detail_tv_ventricular_fibrillation)).
-                setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getSC()));
-        TextView.class.cast(findViewById(R.id.history_detail_tv_atrial_fibrillation)).
-                setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getFC()));
+        if (detection.getMarkStats().getXLBQ() > 0) {
+            TextView.class.cast(findViewById(R.id.history_detail_tv_arrhythmia)).
+                    setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getXLBQ()));
+        } else {
+            findViewById(R.id.history_detail_ll_arrhythmia).setVisibility(View.GONE);
+        }
+        if (detection.getMarkStats().getXLGS() > 0) {
+            TextView.class.cast(findViewById(R.id.history_detail_tv_heart_rate_fast)).
+                    setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getXLGS()));
+        } else {
+            findViewById(R.id.history_detail_ll_heart_rate_fast).setVisibility(View.GONE);
+        }
+        if (detection.getMarkStats().getXLGH() > 0) {
+            TextView.class.cast(findViewById(R.id.history_detail_tv_heart_rate_slow)).
+                    setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getXLGH()));
+        } else {
+            findViewById(R.id.history_detail_ll_heart_rate_slow).setVisibility(View.GONE);
+        }
+        if (detection.getMarkStats().getSXZB() > 0) {
+            TextView.class.cast(findViewById(R.id.history_detail_tv_ventricular_premature_beat)).
+                    setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getSXZB()));
+        } else {
+            findViewById(R.id.history_detail_ll_ventricular_premature_beat).setVisibility(View.GONE);
+        }
+        if (detection.getMarkStats().getFXZB() > 0) {
+            TextView.class.cast(findViewById(R.id.history_detail_tv_room_sex_premature_beat)).
+                    setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getFXZB()));
+        } else {
+            findViewById(R.id.history_detail_ll_room_sex_premature_beat).setVisibility(View.GONE);
+        }
+        if (detection.getMarkStats().getSC() > 0) {
+            TextView.class.cast(findViewById(R.id.history_detail_tv_ventricular_fibrillation)).
+                    setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getSC()));
+        } else {
+            findViewById(R.id.history_detail_ll_ventricular_fibrillation).setVisibility(View.GONE);
+        }
+        if (detection.getMarkStats().getFC() > 0) {
+            TextView.class.cast(findViewById(R.id.history_detail_tv_atrial_fibrillation)).
+                    setText(String.format(Locale.getDefault(), "%s 次", detection.getMarkStats().getFC()));
+        } else {
+            findViewById(R.id.history_detail_ll_atrial_fibrillation).setVisibility(View.GONE);
+        }
 
         TextView.class.cast(findViewById(R.id.history_detail_tv_detection_conclusion)).
                 setText(detection.getMarkStats().getConclusion());
