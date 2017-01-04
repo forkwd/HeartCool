@@ -211,6 +211,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/history_detail_ll_arrhythmia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -235,6 +236,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/history_detail_ll_heart_rate_fast"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -258,6 +260,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/history_detail_ll_heart_rate_slow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -282,6 +285,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/history_detail_ll_ventricular_premature_beat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -305,6 +309,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/history_detail_ll_room_sex_premature_beat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -328,6 +333,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/history_detail_ll_ventricular_fibrillation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -351,6 +357,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/history_detail_ll_atrial_fibrillation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
