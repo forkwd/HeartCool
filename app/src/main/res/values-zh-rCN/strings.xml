@@ -249,11 +249,12 @@
     <string name="detection_conclusion_title">监测结论: </string>
     <string name="detection_desc">* 本次监测仅够参考，如果某次测试效果不是很理想，请保持安静监测一分钟，如果效果还是不理想，建议去医院做进一步的检查</string>
 
-    <string name="reconnect_device">重置设备</string>
+    <string name="reconnect_device">重启设备</string>
     <string name="change_device">换绑设备</string>
     <string name="clear_db">清除数据</string>
     <string name="searching">搜索中</string>
     <string name="logout">登出账号</string>
+    <string name="logout_ask">您确定登出此账号？</string>
     <string name="login_again">返回登录</string>
 
     <string name="aerocardio_setting_confirm_title">确定绑定该设备？</string>
