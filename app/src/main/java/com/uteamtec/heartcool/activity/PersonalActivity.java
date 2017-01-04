@@ -17,8 +17,8 @@ import android.widget.Toast;
 import com.uteamtec.heartcool.R;
 import com.uteamtec.heartcool.service.net.AppNetTcpComm;
 import com.uteamtec.heartcool.service.net.AppNetTcpCommListener;
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.MobclickEvent;
+import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.service.utils.DateFormats;
 import com.uteamtec.heartcool.utils.L;
 
@@ -43,7 +43,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         phone = getIntent().getStringExtra("phone");
         if (TextUtils.isEmpty(phone)) {
-            phone = GlobalVar.getUser().getUsername();
+            phone = User.getUser().getUsername();
         }
         if (TextUtils.isEmpty(phone)) {
             finish();
@@ -51,7 +51,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         }
         password = getIntent().getStringExtra("password");
         if (TextUtils.isEmpty(password)) {
-            password = GlobalVar.getUser().getPassword();
+            password = User.getUser().getPassword();
         }
         if (TextUtils.isEmpty(password)) {
             finish();
@@ -65,11 +65,11 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         findViewById(R.id.btn_personal_save).setOnClickListener(this);
         findViewById(R.id.btn_personal_cancel).setOnClickListener(this);
 
-        if (TextUtils.isEmpty(GlobalVar.getUser().getIdString())) {
+        if (TextUtils.isEmpty(User.getUser().getIdString())) {
             showUserInfo(null);
         } else {
             AppNetTcpComm.getUser().queryAppUserInfoByInfoId(
-                    GlobalVar.getUser().getIdString(),
+                    User.getUser().getIdString(),
                     new AppNetTcpCommListener<JSONObject>() {
                         @Override
                         public void onResponse(boolean success, JSONObject response) {
@@ -156,7 +156,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                                         MobclickEvent.onEvent(PersonalActivity.this,
                                                 MobclickEvent.EventId_UserSignUp);
                                     }
-                                    GlobalVar.getUser().reset(response, "");
+                                    User.getUser().reset(response, "");
                                     goMain();
                                 } else {
                                     runOnUiThread(new Runnable() {
@@ -208,7 +208,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void goMain() {
-        if (GlobalVar.getUser().hasPrevUserDevice()) {
+        if (User.getUser().hasPrevUserDevice()) {
             startActivity(new Intent(this, AeroCardioActivity.class));
         } else {
             startActivity(new Intent(this, AeroCardioSettingActivity.class));

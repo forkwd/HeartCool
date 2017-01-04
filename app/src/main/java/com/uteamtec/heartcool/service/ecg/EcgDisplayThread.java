@@ -3,7 +3,6 @@ package com.uteamtec.heartcool.service.ecg;
 import com.uteamtec.algorithm.types.Ecg;
 import com.uteamtec.heartcool.service.listener.ListenerMgr;
 import com.uteamtec.heartcool.service.major.DetectionService;
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.User;
 
 /**
@@ -53,7 +52,7 @@ public final class EcgDisplayThread extends Thread {
         while (_enabled) {
             try {
                 Ecg ecg = EcgQueue.getDisplay().take();
-                if (GlobalVar.getUser().getFeState() == User.FESTATE_REGISTERED) {
+                if (User.getUser().getFeState() == User.FESTATE_REGISTERED) {
                     DetectionService.recordEcg(ecg);
                     if (ListenerMgr.getDataReceivedListener() != null) {
                         ListenerMgr.getDataReceivedListener().onReceivedEcgRaw(ecg);

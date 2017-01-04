@@ -1,7 +1,6 @@
 package com.uteamtec.heartcool.service.net;
 
 import com.uteamtec.heartcool.messages.AppMessage;
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.utils.L;
 
@@ -58,13 +57,13 @@ public final class AppNetThread extends Thread {
                 break;
             }
             // 如果user id与key未获取到
-            if (GlobalVar.getUser().getId() == null || GlobalVar.getUser().getKey() == null) {
+            if (User.getUser().getId() == null || User.getUser().getKey() == null) {
                 continue;
             }
             // server timeout
-            if (GlobalVar.getUser().getAppState() == User.APPSTATE_CONNECTED ||
-                    GlobalVar.getUser().getAppState() == User.APPSTATE_LOGIN) {
-                long timeDiff = System.currentTimeMillis() - GlobalVar.getUser().getTimeLastAppMessage();
+            if (User.getUser().getAppState() == User.APPSTATE_CONNECTED ||
+                    User.getUser().getAppState() == User.APPSTATE_LOGIN) {
+                long timeDiff = System.currentTimeMillis() - User.getUser().getTimeLastAppMessage();
                 if (timeDiff > User.DEFAULT_INT_APPMSG) {
                     L.e("AppNetThread.ServerTimeout: " + timeDiff);
                     AppNetTcpComm.disconnect(true);
@@ -72,21 +71,21 @@ public final class AppNetThread extends Thread {
                 }
             }
             // reconnecting server
-            switch (GlobalVar.getUser().getAppState()) {
+            switch (User.getUser().getAppState()) {
                 case User.APPSTATE_CONNECTED:
                     // 如果没有登陆，则发送一次登陆请求
-                    if (System.currentTimeMillis() - GlobalVar.getUser().getTimeLastLogin() > User.DEFAULT_INT_LOGIN) {
+                    if (System.currentTimeMillis() - User.getUser().getTimeLastLogin() > User.DEFAULT_INT_LOGIN) {
 //                        L.e("<APP> send login");
-                        GlobalVar.getUser().setTimeLastLogin(System.currentTimeMillis());
-                        AppNetTxQueue.put(AppMessage.createLoginMessage(GlobalVar.getUser().getId(),
-                                GlobalVar.getUser().getKey()));
+                        User.getUser().setTimeLastLogin(System.currentTimeMillis());
+                        AppNetTxQueue.put(AppMessage.createLoginMessage(User.getUser().getId(),
+                                User.getUser().getKey()));
                     }
                     break;
                 case User.APPSTATE_DISCONNECTED:
                     // 如果没有连接，则尝试建立一次连接
-                    if (System.currentTimeMillis() - GlobalVar.getUser().getTimeLastConnectServer() > User.DEFAULT_INT_CONNECT_SERVER) {
+                    if (System.currentTimeMillis() - User.getUser().getTimeLastConnectServer() > User.DEFAULT_INT_CONNECT_SERVER) {
 //                        L.i("<APP> connect server");
-                        GlobalVar.getUser().setTimeLastConnectServer(System.currentTimeMillis());
+                        User.getUser().setTimeLastConnectServer(System.currentTimeMillis());
                         AppNetTcpComm.connect(true);
                     }
                     break;

@@ -39,7 +39,6 @@ import com.uteamtec.heartcool.service.ble.BleFeComm;
 import com.uteamtec.heartcool.service.listener.BleDeviceScannedListener;
 import com.uteamtec.heartcool.service.listener.ListenerMgr;
 import com.uteamtec.heartcool.service.listener.UserStateChangedListener;
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.service.type.UserDevice;
 import com.uteamtec.heartcool.utils.CrashHandler;
@@ -241,7 +240,7 @@ public class SettingActivity extends BaseActivity {
             });
 
             //initial state
-            if (GlobalVar.getUser().getFeState() == User.FESTATE_DISABLED) {
+            if (User.getUser().getFeState() == User.FESTATE_DISABLED) {
                 isBleOff = true;
                 L.i("<UI> initial state: do nonthing");
                 ringSearch.setVisibility(View.GONE);
@@ -359,7 +358,7 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 L.i("设备地址", devices.get(position).getMacAddr());
-                if (mainService != null && GlobalVar.getUser().getFeState() != User.FESTATE_DISABLED) { // && devices.get(position).getState() != UserDevice.STATE_OFF) {
+                if (mainService != null && User.getUser().getFeState() != User.FESTATE_DISABLED) { // && devices.get(position).getState() != UserDevice.STATE_OFF) {
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SettingActivity.this);
                     dialogBuilder.setTitle(getResources().getString(R.string.new_conn_confirm_title));
                     dialogBuilder.setMessage(getResources().getString(R.string.new_conn_confirm_content));
@@ -386,7 +385,7 @@ public class SettingActivity extends BaseActivity {
                     });
                     dialogBuilder.create().show();
                 } else {
-                    if (GlobalVar.getUser().getFeState() == User.FESTATE_DISABLED) {
+                    if (User.getUser().getFeState() == User.FESTATE_DISABLED) {
                         Toast.makeText(SettingActivity.this, getString(R.string.ble_disabled), Toast.LENGTH_SHORT).show();
                     } else if (devices.get(position).getState() == UserDevice.STATE_OFF) {
                         Toast.makeText(SettingActivity.this, getString(R.string.device_off), Toast.LENGTH_SHORT).show();

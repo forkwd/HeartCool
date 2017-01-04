@@ -1,7 +1,7 @@
 package com.uteamtec.heartcool.service.ble;
 
 import com.uteamtec.heartcool.messages.FeMessage;
-import com.uteamtec.heartcool.service.type.GlobalVar;
+import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.utils.L;
 
 /**
@@ -58,7 +58,7 @@ public final class BleFePulseTxThread extends Thread {
     @Override
     public void run() {
         while (_enabled) {
-            if (_cnt == 0 && !GlobalVar.getUser().getIsDevReset()) {
+            if (_cnt == 0 && !User.getUser().getIsDevReset()) {
                 L.e("<BLE> W Reset");
                 BleFeTxQueue.put(FeMessage.createResetMsg());
             }

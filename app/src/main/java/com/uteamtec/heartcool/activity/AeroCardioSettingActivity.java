@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -27,7 +28,6 @@ import com.uteamtec.heartcool.service.listener.ListenerMgr;
 import com.uteamtec.heartcool.service.listener.UserStateChangedListener;
 import com.uteamtec.heartcool.service.net.AppNetTcpComm;
 import com.uteamtec.heartcool.service.net.AppNetTcpCommListener;
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.service.type.UserDevice;
 import com.uteamtec.heartcool.service.type.UserSaveType;
@@ -143,7 +143,7 @@ public class AeroCardioSettingActivity extends BaseAppCompatActivity
         ListenerMgr.registerUserStateChangedListener(userStateChangedListener);
 
         //initial state
-        if (GlobalVar.getUser().getFeState() == User.FESTATE_DISABLED) {
+        if (User.getUser().getFeState() == User.FESTATE_DISABLED) {
             ringSearch.setVisibility(View.GONE);
             research.setVisibility(View.VISIBLE);
             deviceList.setVisibility(View.VISIBLE);
@@ -180,7 +180,7 @@ public class AeroCardioSettingActivity extends BaseAppCompatActivity
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, final int position, long id) {
-        if (GlobalVar.getUser().getFeState() == User.FESTATE_DISABLED) {
+        if (User.getUser().getFeState() == User.FESTATE_DISABLED) {
             Toast.makeText(this, getString(R.string.ble_disabled), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -272,6 +272,10 @@ public class AeroCardioSettingActivity extends BaseAppCompatActivity
     private BleDeviceScannedListener bleDeviceScannedListener = new BleDeviceScannedListener() {
         @Override
         public void onBleDeviceScanned(BluetoothDevice device) {
+            if (TextUtils.isEmpty(device.getAddress()) ||
+                    TextUtils.isEmpty(device.getName())) {
+                return;
+            }
             UserDevice scannedDev = new UserDevice(device.getAddress(), device.getName());
             scannedDev.setState(UserDevice.STATE_ON);
             deviceListAdapter.add(scannedDev);
@@ -386,7 +390,7 @@ public class AeroCardioSettingActivity extends BaseAppCompatActivity
                     });
                     break;
                 case User.FESTATE_REGISTERED:
-                    if (GlobalVar.getUser().hasUserDevice() && BleFeComm.getClient().isConnected()) {
+                    if (User.getUser().hasUserDevice() && BleFeComm.getClient().isConnected()) {
                         if (tryCount++ >= 5) {
                             return;
                         } else if (tryCount == 0) {
@@ -398,16 +402,16 @@ public class AeroCardioSettingActivity extends BaseAppCompatActivity
 
                         UserDevice dev = deviceListAdapter.getItem(connectedIdx);
                         if (dev != null) {
-                            GlobalVar.getUser().getUserDevice().setName(dev.getName());
-                            GlobalVar.getUser().getUserDevice().setMacAddr(dev.getMacAddr());
-                            GlobalVar.getUser().setPrevUserDevice(GlobalVar.getUser().getUserDevice());
+                            User.getUser().getUserDevice().setName(dev.getName());
+                            User.getUser().getUserDevice().setMacAddr(dev.getMacAddr());
+                            User.getUser().setPrevUserDevice(User.getUser().getUserDevice());
                         }
-                        GlobalVar.getUser().save(UserSaveType.Device); //store prev device
-                        GlobalVar.getUser().save(UserSaveType.BoundedDevice); //store bounded device
+                        User.getUser().save(UserSaveType.Device); //store prev device
+                        User.getUser().save(UserSaveType.BoundedDevice); //store bounded device
 
                         AppNetTcpComm.getInfo().bindDeviceByMacAddress(
-                                GlobalVar.getUser().getIdString(),
-                                GlobalVar.getUser().getUserDevice().getMacAddr(),
+                                User.getUser().getIdString(),
+                                User.getUser().getUserDevice().getMacAddr(),
                                 new AppNetTcpCommListener<String>() {
                                     @Override
                                     public void onResponse(boolean success, final String response) {

@@ -1,6 +1,5 @@
 package com.uteamtec.heartcool.service.ble;
 
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.utils.L;
 
@@ -58,10 +57,10 @@ public final class BleFeThread extends Thread {
                 break;
             }
             // FE timeout
-            if (GlobalVar.getUser().getFeState() == User.FESTATE_CONNECTED ||
-                    GlobalVar.getUser().getFeState() == User.FESTATE_REGISTERED) {
+            if (User.getUser().getFeState() == User.FESTATE_CONNECTED ||
+                    User.getUser().getFeState() == User.FESTATE_REGISTERED) {
                 //check if connections are alive
-                if (System.currentTimeMillis() - GlobalVar.getUser().getTimeLastFeMessage()
+                if (System.currentTimeMillis() - User.getUser().getTimeLastFeMessage()
                         >= User.DEFAULT_INT_FEMSG) {
 //                    BleFeComm.getClient().disconnect();
                     L.e("BleFeThread.FE timeout (failed)");
@@ -70,13 +69,13 @@ public final class BleFeThread extends Thread {
                 }
             }
             // FE reconnecting
-            switch (GlobalVar.getUser().getFeState()) {
+            switch (User.getUser().getFeState()) {
                 case User.FESTATE_DISCONNECTED:
-//                    if (System.currentTimeMillis() - GlobalVar.getUser().getTimeLastConnectFe() > User.DEFAULT_INT_CONNECT_FE) {
+//                    if (System.currentTimeMillis() - User.getUser().getTimeLastConnectFe() > User.DEFAULT_INT_CONNECT_FE) {
 //                        L.i("<BLE> connect FE");
 //                        try {
 //                            Thread.sleep(200);
-//                            GlobalVar.getUser().setTimeLastConnectFe(System.currentTimeMillis());
+//                            User.getUser().setTimeLastConnectFe(System.currentTimeMillis());
 //                            if (BleFeComm.getClient().isKeep()) {
 //                                BleFeComm.getClient().connect();
 //                            }

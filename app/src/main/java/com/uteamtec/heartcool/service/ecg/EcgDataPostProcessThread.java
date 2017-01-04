@@ -5,7 +5,7 @@ import com.uteamtec.algorithm.types.Ecg;
 import com.uteamtec.heartcool.messages.AppMessage;
 import com.uteamtec.heartcool.service.major.DetectionService;
 import com.uteamtec.heartcool.service.net.AppNetTxQueue;
-import com.uteamtec.heartcool.service.type.GlobalVar;
+import com.uteamtec.heartcool.service.type.User;
 
 /**
  * Created by wd
@@ -88,12 +88,12 @@ public final class EcgDataPostProcessThread extends Thread {
                     }
 
                     // debug code, if connected device is null, should not start postprocess
-                    if (!GlobalVar.getUser().hasUserDevice() || resolution <= 0) {
+                    if (!User.getUser().hasUserDevice() || resolution <= 0) {
                         continue;
                     }
 
                     // add sps information for AppMessage transmission
-                    ecg.setSps(GlobalVar.getUser().getUserDevice().getSps());
+                    ecg.setSps(User.getUser().getUserDevice().getSps());
 
                     if (resolution > 0 && DetectionService.isRecording()) {
                         // For ordinary device

@@ -13,8 +13,8 @@ import com.uteamtec.heartcool.R;
 import com.uteamtec.heartcool.service.net.AppNetTcpComm;
 import com.uteamtec.heartcool.service.net.AppNetTcpCommListener;
 import com.uteamtec.heartcool.service.type.Config;
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.MobclickEvent;
+import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.service.type.UserDevice;
 import com.uteamtec.heartcool.service.type.UserSaveType;
 import com.uteamtec.heartcool.utils.L;
@@ -48,8 +48,8 @@ public class AeroCardioLoginActivity extends BaseAppCompatActivity implements Vi
         // 是否选中记住密码
         if (Config.getBoolean(Config.Info,
                 Config.PREF_LOGIN_REMEMBER, true)) {
-            etUsername.setText(GlobalVar.getUser().getUsername());
-            etPassword.setText(GlobalVar.getUser().getPassword());
+            etUsername.setText(User.getUser().getUsername());
+            etPassword.setText(User.getUser().getPassword());
             cbRemember.setChecked(true);
             if (Config.getBoolean(Config.Info,
                     Config.PREF_LOGIN_AUTO, false) &&
@@ -137,9 +137,9 @@ public class AeroCardioLoginActivity extends BaseAppCompatActivity implements Vi
                     Config.putBoolean(Config.Info,
                             Config.PREF_LOGIN_AUTO, false);
 
-                    GlobalVar.getUser().setUsername(username);
-                    GlobalVar.getUser().setPassword(password);
-                    GlobalVar.getUser().save(UserSaveType.Login);
+                    User.getUser().setUsername(username);
+                    User.getUser().setPassword(password);
+                    User.getUser().save(UserSaveType.Login);
 
                     Toast.makeText(AeroCardioLoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
 
@@ -156,7 +156,7 @@ public class AeroCardioLoginActivity extends BaseAppCompatActivity implements Vi
                                                         public void onResponse(boolean success, String response) {
                                                             L.e("queryInfoIdByAppUserCode -> success: " + success + " response:" + response);
                                                             if (success) {
-                                                                GlobalVar.getUser().reset(response, "");
+                                                                User.getUser().reset(response, "");
                                                                 MobclickAgent.onProfileSignIn(response, username);
                                                                 loginSuccess();
                                                             } else {
@@ -185,18 +185,18 @@ public class AeroCardioLoginActivity extends BaseAppCompatActivity implements Vi
     }
 
     private void loginSuccess() {
-        if (GlobalVar.getUser().hasPrevUserDevice()) {
+        if (User.getUser().hasPrevUserDevice()) {
             gotoMain();
         } else {
             AppNetTcpComm.getInfo().queryBindDeviceByInfoId(
-                    GlobalVar.getUser().getIdString(),
+                    User.getUser().getIdString(),
                     new AppNetTcpCommListener<UserDevice>() {
                         @Override
                         public void onResponse(boolean success, UserDevice response) {
                             L.e("queryBindDeviceByInfoId -> success: " + success);
                             if (success && response != null) {
                                 L.e("queryBindDeviceByInfoId -> response:" + response.toString());
-                                GlobalVar.getUser().updateUserDevice(response);
+                                User.getUser().updateUserDevice(response);
                                 gotoMain();
                             } else {
                                 gotoSetting();

@@ -26,8 +26,8 @@ import com.uteamtec.heartcool.service.net.AppNetTcpComm;
 import com.uteamtec.heartcool.service.net.AppNetTcpCommListener;
 import com.uteamtec.heartcool.service.stats.EcgMarkReport;
 import com.uteamtec.heartcool.service.type.EcgMark;
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.MobclickEvent;
+import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.service.type.UserDevice;
 import com.uteamtec.heartcool.utils.L;
 import com.uteamtec.heartcool.views.widget.EcgView;
@@ -185,12 +185,12 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
     }
 
     private void keepConnect() {
-        if (GlobalVar.getUser().hasUserDeviceAndMac()) {
+        if (User.getUser().hasUserDeviceAndMac()) {
             refreshProgress();
-            BleFeComm.getClient().connect(GlobalVar.getUser().getUserDevice().getMacAddr());
-        } else if (GlobalVar.getUser().hasPrevUserDevice()) {
+            BleFeComm.getClient().connect(User.getUser().getUserDevice().getMacAddr());
+        } else if (User.getUser().hasPrevUserDevice()) {
             refreshProgress();
-            BleFeComm.getClient().connect(GlobalVar.getUser().getPrevUserDevice().getMacAddr());
+            BleFeComm.getClient().connect(User.getUser().getPrevUserDevice().getMacAddr());
         } else if (getActivity() != null) {
             L.e("AeroCardioFragment.NoDevice");
             startActivity(new Intent(getActivity(), AeroCardioSettingActivity.class));
@@ -304,7 +304,7 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
             }
             // ================================这里是网络上传数据================================
             AppNetTcpComm.getEcg().saveAppEcgAnalysis(
-                    GlobalVar.getUser().getIdString(), detection,
+                    User.getUser().getIdString(), detection,
                     new AppNetTcpCommListener<String>() {
                         @Override
                         public void onResponse(boolean success, String response) {
@@ -367,7 +367,7 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
         @Override
         public void onMarkLeadOff(String msg) {
             L.e("EcgMarkListener.onMarkLeadOff: " + msg);
-            GlobalVar.getUser().interruptAppNetEcg();
+            User.getUser().interruptAppNetEcg();
             warningViewHard.showWarningUI(getActivity(), WarningView.WarningType.LEADOFF);
         }
 
@@ -379,13 +379,13 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
         @Override
         public void onMarkShort(String msg) {
             L.e("EcgMarkListener.onMarkShort: " + msg);
-            GlobalVar.getUser().interruptAppNetEcg();
+            User.getUser().interruptAppNetEcg();
         }
 
         @Override
         public void onMarkUnplug(String msg) {
             L.e("EcgMarkListener.onMarkUnplug: " + msg);
-            GlobalVar.getUser().interruptAppNetEcg();
+            User.getUser().interruptAppNetEcg();
         }
 
         @Override

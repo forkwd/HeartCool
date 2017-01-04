@@ -16,7 +16,7 @@ import com.uteamtec.heartcool.service.db.DBDetection;
 import com.uteamtec.heartcool.service.db.DBOrm;
 import com.uteamtec.heartcool.service.net.AppNetTcpComm;
 import com.uteamtec.heartcool.service.net.AppNetTcpCommListener;
-import com.uteamtec.heartcool.service.type.GlobalVar;
+import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.utils.L;
 import com.uteamtec.heartcool.views.widget.CalendarListView;
 
@@ -142,7 +142,7 @@ public abstract class HistoryFragment extends BaseFragment implements View.OnCli
             data.clear();
         }
         AppNetTcpComm.getEcg().queryAppEcgAnalysisByTime(
-                GlobalVar.getUser().getIdString(),
+                User.getUser().getIdString(),
                 calendarListView.getMonth(),
                 new AppNetTcpCommListener<List<DBDetection>>() {
                     @Override

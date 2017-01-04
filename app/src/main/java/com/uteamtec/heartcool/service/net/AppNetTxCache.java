@@ -3,7 +3,7 @@ package com.uteamtec.heartcool.service.net;
 import com.uteamtec.heartcool.AeroCardioApp;
 import com.uteamtec.heartcool.messages.AppMessage;
 import com.uteamtec.heartcool.service.cache.ACacheHelper;
-import com.uteamtec.heartcool.service.type.GlobalVar;
+import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.utils.L;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public final class AppNetTxCache {
             @Override
             public void run() {
                 L.e("AppNetTxCache.queue queue.size: " + queue.size());
-                if (!GlobalVar.getUser().isConnectedDeviceAppNet() &&
+                if (!User.getUser().isConnectedDeviceAppNet() &&
                         queue.size() >= 50) {
                     synchronized (getCache().lock) {
                         List<AppMessage> list = new ArrayList<>();
@@ -56,7 +56,7 @@ public final class AppNetTxCache {
                         cache.putAll(list);
                     }
                     L.e("AppNetTxCache.drainTo queue.size: " + queue.size());
-                } else if (GlobalVar.getUser().isConnectedDeviceAppNet() &&
+                } else if (User.getUser().isConnectedDeviceAppNet() &&
                         queue.isEmpty()) {
                     List<AppMessage> list = cache.drain();
                     if (list != null) {

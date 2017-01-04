@@ -19,8 +19,8 @@ import com.uteamtec.heartcool.service.ble.BleFeComm;
 import com.uteamtec.heartcool.service.db.DBOrm;
 import com.uteamtec.heartcool.service.net.AppNetTcpComm;
 import com.uteamtec.heartcool.service.net.AppNetTcpCommListener;
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.MobclickEvent;
+import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.service.type.UserDevices;
 import com.uteamtec.heartcool.service.utils.DateFormats;
 import com.uteamtec.heartcool.utils.L;
@@ -45,10 +45,10 @@ public class AeroCardioActivity extends BaseAppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aerocardio);
 
-        if (GlobalVar.getUser().hasPrevUserDevice()) {
+        if (User.getUser().hasPrevUserDevice()) {
             AppNetTcpComm.getInfo().validateUserInfoAndDevice(
-                    GlobalVar.getUser().getIdString(),
-                    GlobalVar.getUser().getPrevUserDevice().getMacAddr(),
+                    User.getUser().getIdString(),
+                    User.getUser().getPrevUserDevice().getMacAddr(),
                     new AppNetTcpCommListener<UserDevices>() {
                         @Override
                         public void onResponse(boolean success, UserDevices response) {
@@ -120,8 +120,8 @@ public class AeroCardioActivity extends BaseAppCompatActivity
             case R.id.action_settings_logout:
                 MobclickEvent.onEvent(this,
                         MobclickEvent.EventId_UserSignOut);
-                GlobalVar.getUser().clear();
-                GlobalVar.getUser().reset();
+                User.getUser().clear();
+                User.getUser().reset();
                 gotoLogin();
                 return true;
             case R.id.action_settings_login:

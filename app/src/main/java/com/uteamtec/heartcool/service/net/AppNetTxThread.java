@@ -2,7 +2,6 @@ package com.uteamtec.heartcool.service.net;
 
 import com.uteamtec.heartcool.messages.AppMessage;
 import com.uteamtec.heartcool.messages.AppMessageCoder;
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.utils.L;
 
@@ -54,9 +53,9 @@ public final class AppNetTxThread extends Thread {
     public void run() {
         AppMessage msg;
         while (_enabled) {
-            if (GlobalVar.getUser().getAppState() != User.APPSTATE_LOGIN &&
-                    GlobalVar.getUser().getAppState() != User.APPSTATE_CONNECTED) {
-                L.e("AppNetTxThread.Pass: " + GlobalVar.getUser().getAppState());
+            if (User.getUser().getAppState() != User.APPSTATE_LOGIN &&
+                    User.getUser().getAppState() != User.APPSTATE_CONNECTED) {
+                L.e("AppNetTxThread.Pass: " + User.getUser().getAppState());
                 try {
                     Thread.sleep(300);
                 } catch (InterruptedException e) {
@@ -68,7 +67,7 @@ public final class AppNetTxThread extends Thread {
                 AppNetTxQueue.put(AppMessage.createPulseMessage());
                 sendPulse();
             }
-            if (!GlobalVar.getUser().isConnectedDeviceAppNet() &&
+            if (!User.getUser().isConnectedDeviceAppNet() &&
                     !AppNetTxCache.hasPriority()) {
                 L.e("AppNetTxThread.NotConnect...");
                 try {
@@ -82,9 +81,9 @@ public final class AppNetTxThread extends Thread {
             if (msg == null) {
                 continue;
             }
-//            L.e("AppNetTxThread.State: " + GlobalVar.getUser().getAppState() +
+//            L.e("AppNetTxThread.State: " + User.getUser().getAppState() +
 //                    " Type: " + msg.getType());
-            if (GlobalVar.getUser().getAppState() == User.APPSTATE_CONNECTED &&
+            if (User.getUser().getAppState() == User.APPSTATE_CONNECTED &&
                     msg.getType() != AppMessage.TYPE_LOGIN) {
                 continue;
             }

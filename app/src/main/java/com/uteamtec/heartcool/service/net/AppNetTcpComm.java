@@ -11,7 +11,6 @@ import com.uteamtec.heartcool.service.net.module.AppNetTcpInfo;
 import com.uteamtec.heartcool.service.net.module.AppNetTcpSms;
 import com.uteamtec.heartcool.service.net.module.AppNetTcpUser;
 import com.uteamtec.heartcool.service.stats.EcgMarkReport;
-import com.uteamtec.heartcool.service.type.GlobalVar;
 import com.uteamtec.heartcool.service.type.User;
 import com.uteamtec.heartcool.utils.ActivityStack;
 import com.uteamtec.heartcool.utils.ApiUrl;
@@ -46,26 +45,26 @@ public final class AppNetTcpComm {
                 switch (state) {
                     case TcpComm.STATE_DISCONNECTED:
 //                        L.e("AppNetTcpComm.STATE_DISCONNECTED");
-                        GlobalVar.getUser().setAppState(User.APPSTATE_DISCONNECTED);
-                        GlobalVar.getUser().setConnectedDeviceAppNet(false);
+                        User.getUser().setAppState(User.APPSTATE_DISCONNECTED);
+                        User.getUser().setConnectedDeviceAppNet(false);
                         ActivityStack.toast(R.string.offline);
                         break;
                     case TcpComm.STATE_CONNECTED:
 //                        L.e("AppNetTcpComm.STATE_CONNECTED");
-                        GlobalVar.getUser().setAppState(User.APPSTATE_CONNECTED);
-                        GlobalVar.getUser().resetLastAppNetMessageTime();
-                        GlobalVar.getUser().setTimeLastLogin(System.currentTimeMillis());
-                        AppNetTxQueue.put(AppMessage.createLoginMessage(GlobalVar.getUser().getId(),
-                                GlobalVar.getUser().getKey()));
+                        User.getUser().setAppState(User.APPSTATE_CONNECTED);
+                        User.getUser().resetLastAppNetMessageTime();
+                        User.getUser().setTimeLastLogin(System.currentTimeMillis());
+                        AppNetTxQueue.put(AppMessage.createLoginMessage(User.getUser().getId(),
+                                User.getUser().getKey()));
                         break;
                     case TcpComm.STATE_CONNECTING:
-                        GlobalVar.getUser().setAppState(User.APPSTATE_CONNECTING);
+                        User.getUser().setAppState(User.APPSTATE_CONNECTING);
                         break;
                     default:
                         break;
                 }
                 if (ListenerMgr.getUserStateChangedListener() != null) {
-                    ListenerMgr.getUserStateChangedListener().onAppStateChanged(GlobalVar.getUser().getAppState());
+                    ListenerMgr.getUserStateChangedListener().onAppStateChanged(User.getUser().getAppState());
                 }
             }
         });
@@ -101,7 +100,7 @@ public final class AppNetTcpComm {
     }
 
     public static boolean connect(boolean force) {
-        if (force || GlobalVar.getUser().getAppState() == User.APPSTATE_DISCONNECTED) {
+        if (force || User.getUser().getAppState() == User.APPSTATE_DISCONNECTED) {
             try {
                 getTcpComm().connect();
                 return true;
@@ -113,8 +112,8 @@ public final class AppNetTcpComm {
     }
 
     public static void disconnect(boolean force) {
-        if (force || GlobalVar.getUser().getAppState() == User.APPSTATE_CONNECTED ||
-                GlobalVar.getUser().getAppState() == User.APPSTATE_LOGIN) {
+        if (force || User.getUser().getAppState() == User.APPSTATE_CONNECTED ||
+                User.getUser().getAppState() == User.APPSTATE_LOGIN) {
             getTcpComm().disconnect();
         }
     }
