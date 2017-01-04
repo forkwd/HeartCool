@@ -42,11 +42,17 @@ public class CalendarListView extends com.kelin.calendarlistview.library.Calenda
 
     public CalendarListView(Context context) {
         super(context, null);
+        if (isInEditMode()) {
+            return;
+        }
         init();
     }
 
     public CalendarListView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        if (isInEditMode()) {
+            return;
+        }
         init();
     }
 

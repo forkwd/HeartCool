@@ -41,9 +41,9 @@ public final class HistoryCalendarItemAdapter extends BaseCalendarItemAdapter<Hi
                 contentViewHolder.dayNum.setText(getContext().getResources().getString(com.kelin.calendarlistview.library.R.string.today));
             }
 
-            if (model.isHoliday()) {
-                contentViewHolder.dayNum.setTextColor(getContext().getResources().getColor(com.kelin.calendarlistview.library.R.color.red_ff725f));
-            }
+//            if (model.isHoliday()) {
+//                contentViewHolder.dayNum.setTextColor(getContext().getResources().getColor(com.kelin.calendarlistview.library.R.color.red_ff725f));
+//            }
 
             if (model.getStatus() == BaseCalendarItemModel.Status.DISABLE) {
                 contentViewHolder.dayNum.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
