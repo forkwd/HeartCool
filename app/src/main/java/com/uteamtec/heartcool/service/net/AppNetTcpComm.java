@@ -1,7 +1,6 @@
 package com.uteamtec.heartcool.service.net;
 
 import com.uteamtec.heartcool.MainConstant;
-import com.uteamtec.heartcool.R;
 import com.uteamtec.heartcool.comm.TcpComm;
 import com.uteamtec.heartcool.messages.AppMessage;
 import com.uteamtec.heartcool.service.listener.ListenerMgr;
@@ -12,7 +11,6 @@ import com.uteamtec.heartcool.service.net.module.AppNetTcpSms;
 import com.uteamtec.heartcool.service.net.module.AppNetTcpUser;
 import com.uteamtec.heartcool.service.stats.EcgMarkReport;
 import com.uteamtec.heartcool.service.type.User;
-import com.uteamtec.heartcool.utils.ActivityStack;
 import com.uteamtec.heartcool.utils.ApiUrl;
 
 import net.tsz.afinal.FinalHttp;
@@ -47,7 +45,7 @@ public final class AppNetTcpComm {
 //                        L.e("AppNetTcpComm.STATE_DISCONNECTED");
                         User.getUser().setAppState(User.APPSTATE_DISCONNECTED);
                         User.getUser().setConnectedDeviceAppNet(false);
-                        ActivityStack.toast(R.string.offline);
+//                        ActivityStack.toast(R.string.offline);
                         break;
                     case TcpComm.STATE_CONNECTED:
 //                        L.e("AppNetTcpComm.STATE_CONNECTED");

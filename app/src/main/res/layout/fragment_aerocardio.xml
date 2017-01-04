@@ -238,8 +238,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:padding="10dp">
 
         <com.uteamtec.heartcool.views.widget.WarningView
             android:id="@+id/fragment_aerocardio_wv_hard"
@@ -270,26 +269,36 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:gravity="center"
-        android:padding="6dp">
+        android:layout_marginBottom="8dp"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/fragment_aerocardio_iv_online"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:padding="6dp"
+            android:src="@drawable/dev_off"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/fragment_aerocardio_btn_stop"
             android:layout_width="150dp"
             android:layout_height="60dp"
-            android:background="@drawable/bt_bg"
+            android:layout_centerInParent="true"
+            android:background="@drawable/btn_bg_yellow"
             android:onClick="doStop"
-            android:text="@string/end"
+            android:text="@string/endTest"
             android:textColor="@color/colorStep"
             android:textSize="20sp"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/fragment_aerocardio_btn_start"
             android:layout_width="150dp"
             android:layout_height="60dp"
-            android:background="@drawable/bt_bg"
+            android:layout_centerInParent="true"
+            android:background="@drawable/btn_bg"
             android:gravity="center"
             android:onClick="doStuff"
             android:text="@string/startTest"

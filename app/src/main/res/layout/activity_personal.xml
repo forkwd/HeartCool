@@ -274,7 +274,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:layout_weight="1"
-            android:background="@drawable/bt_bg"
+            android:background="@drawable/btn_bg"
             android:gravity="center"
             android:text="@string/inputSave"
             android:textColor="@color/colorStep" />
@@ -285,7 +285,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:layout_weight="1"
-            android:background="@drawable/bt_bg"
+            android:background="@drawable/btn_bg"
             android:gravity="center"
             android:text="@string/inputCancel"
             android:textColor="@color/colorStep" />

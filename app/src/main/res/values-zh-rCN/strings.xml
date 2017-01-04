@@ -110,6 +110,7 @@
     <string name="InstantHeartRate">实时心律</string>
     <string name="NormalRhythm">实时呼吸</string>
     <string name="startTest">开始监测</string>
+    <string name="endTest">结束监测</string>
     <string name="end">结束</string>
     <string name="finish">本次监测已经完成!</string>
     <string name="confirm">确认</string>

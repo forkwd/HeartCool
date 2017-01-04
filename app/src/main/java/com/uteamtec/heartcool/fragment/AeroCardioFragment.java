@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,8 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
     private WarningView warningViewHard;
     private WarningView warningViewSoft;
 
+    private ImageView imgOnline;
+
     private Button btnRecordStart;
     private Button btnRecordStop;
 
@@ -91,6 +94,8 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
 
             warningViewHard = (WarningView) getRootView().findViewById(R.id.fragment_aerocardio_wv_hard);
             warningViewSoft = (WarningView) getRootView().findViewById(R.id.fragment_aerocardio_wv_soft);
+
+            imgOnline = (ImageView) getRootView().findViewById(R.id.fragment_aerocardio_iv_online);
 
             btnRecordStart = (Button) getRootView().findViewById(R.id.fragment_aerocardio_btn_start);
             btnRecordStart.setOnClickListener(this);
@@ -434,22 +439,17 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
         }
 
         @Override
-        public void onAppStateChanged(int state) {
-//                if (state == User.APPSTATE_DISCONNECTED) {
-//                    getActivity().runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            reconnectProgress.setVisibility(View.VISIBLE);
-//                        }
-//                    });
-//                } else {
-//                    getActivity().runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            reconnectProgress.setVisibility(View.INVISIBLE);
-//                        }
-//                    });
-//                }
+        public void onAppStateChanged(final int state) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (state == User.APPSTATE_CONNECTED) {
+                        imgOnline.setVisibility(View.INVISIBLE);
+                    } else {
+                        imgOnline.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
         }
 
         @Override
