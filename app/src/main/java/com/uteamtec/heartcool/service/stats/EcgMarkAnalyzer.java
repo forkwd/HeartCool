@@ -246,6 +246,26 @@ public final class EcgMarkAnalyzer {
         return T;
     }
 
+    /**
+     * 正常心率结论
+     *
+     * @return int
+     * 0-各项指标均在正常范围内;
+     * 1-心脏骤停;
+     * 2-可能房性类异常;
+     * 3-可能事性类异常
+     */
+    public int getHealthHRLevel() {
+        if (HR <= 0) {
+            return 1;
+        } else if (this.HR <= 100 && this.HR >= 84 || this.HR <= 48) {
+            return 2;
+        } else if (this.HR > 100) {
+            return 3;
+        }
+        return 0;
+    }
+
     public int getAverageBR() {
         if (BRCount <= 0) {
             return 0;
@@ -253,6 +273,11 @@ public final class EcgMarkAnalyzer {
         return (int) (BRTotal / BRCount);
     }
 
+    /**
+     * 信号质量
+     *
+     * @return int 0-优; 1-良; 2-中; 3-差
+     */
     public int getNoiseLevel() {
         if (seconds <= 0) {
             return 0;

@@ -26,6 +26,8 @@ public final class EcgMarkReport {
     public String jcfk; // 心律监测反馈
     public String yczb; // 心律异常指标
 
+    public String xhzl; // 信号质量
+
     private int markSize = 0;
 
     public EcgMarkReport(EcgMarkAnalyzer analyzer) {
@@ -40,25 +42,49 @@ public final class EcgMarkReport {
             this.BR = analyzer.getAverageBR();
             this.pjhx = String.valueOf(this.BR);
             if (this.HR <= 100 && this.HR >= 50) {
-                this.smzl = AeroCardioApp.getApplication().getString(R.string.sleepQuality);
+                this.smzl = getString(R.string.sleepQuality);
             } else {
-                this.smzl = AeroCardioApp.getApplication().getString(R.string.no);
+                this.smzl = getString(R.string.no);
             }
 
-            if (this.HR <= 0) {
-                this.jcfk = AeroCardioApp.getApplication().getString(R.string.arrest);// 心脏骤停
-                this.yczb = AeroCardioApp.getApplication().getString(R.string.heartExp);// 心律异常
-            } else if (this.HR <= 100 && this.HR >= 84 || this.HR <= 48) {
-                this.jcfk = AeroCardioApp.getApplication().getString(R.string.scope);// 部分指标不在正常范围内
-                this.yczb = AeroCardioApp.getApplication().getString(R.string.heartExp);// 心律异常
-            } else if (this.HR > 100) {
-                this.jcfk = AeroCardioApp.getApplication().getString(R.string.fibrillation);// 房颤
-                this.yczb = AeroCardioApp.getApplication().getString(R.string.heartExp);// 心律异常
-            } else {
-                this.jcfk = AeroCardioApp.getApplication().getString(R.string.indicators);// 各项指标均在正常范围内
-                this.yczb = AeroCardioApp.getApplication().getString(R.string.no);// 无
+            switch (analyzer.getHealthHRLevel()) {
+                case 1:
+                    this.jcfk = getString(R.string.arrest);// 心脏骤停
+                    this.yczb = getString(R.string.heartExp);// 心律异常
+                    break;
+                case 2:
+                    this.jcfk = getString(R.string.scope);// 部分指标不在正常范围内
+                    this.yczb = getString(R.string.heartExp);// 心律异常
+                    break;
+                case 3:
+                    this.jcfk = getString(R.string.fibrillation);// 房颤
+                    this.yczb = getString(R.string.heartExp);// 心律异常
+                    break;
+                default:
+                    this.jcfk = getString(R.string.indicators);// 各项指标均在正常范围内
+                    this.yczb = getString(R.string.no);// 无
+                    break;
+            }
+
+            switch (analyzer.getNoiseLevel()) {
+                case 1:
+                    this.xhzl = getString(R.string.level_better);// 良
+                    break;
+                case 2:
+                    this.xhzl = getString(R.string.level_normal);// 中
+                    break;
+                case 3:
+                    this.xhzl = getString(R.string.level_bad);// 差
+                    break;
+                default:
+                    this.xhzl = getString(R.string.level_best);// 优
+                    break;
             }
         }
+    }
+
+    private String getString(int resId) {
+        return AeroCardioApp.getApplication().getString(resId);
     }
 
     public int getMarkSize() {

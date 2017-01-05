@@ -281,4 +281,9 @@
     <string name="reset_password_success">重置密码成功</string>
     <string name="password_fail_err">修改密码失败: %1$s</string>
 
+    <string name="level_best">优</string>
+    <string name="level_better">良</string>
+    <string name="level_normal">中</string>
+    <string name="level_bad">差</string>
+
 </resources>
