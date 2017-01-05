@@ -78,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@color/colorDection"
+                    android:textColor="@color/colorDetection"
                     android:textSize="25sp" />
 
                 <TextView
@@ -123,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@color/colorDection"
+                    android:textColor="@color/colorDetection"
                     android:textSize="25sp" />
 
                 <TextView
@@ -168,7 +168,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@color/colorDection"
+                    android:textColor="@color/colorDetection"
                     android:textSize="25sp" />
 
                 <TextView
@@ -213,7 +213,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@color/colorDection"
+                    android:textColor="@color/colorDetection"
                     android:textSize="25sp" />
 
                 <TextView
