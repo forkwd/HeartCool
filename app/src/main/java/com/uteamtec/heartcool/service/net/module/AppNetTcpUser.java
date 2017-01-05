@@ -283,16 +283,17 @@ public final class AppNetTcpUser extends AppNetTcpBase {
      */
     public void validate(final String telephone, final String password,
                          final AppNetTcpCommListener<String> listener) {
-        HttpTool.StringGET(getURL(new String[]{"v1", "user", "validate"},
+        HttpTool.JsonGET(getURL(new String[]{"v1", "user", "validate"},
                 new HashMap<String, String>() {{
                     put("userCode", telephone);
                     put("pwd", password);
                 }}),
-                new Response.Listener<String>() {
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(JSONObject response) {
                         if (listener != null) {
-                            listener.onResponse(Boolean.parseBoolean(response.trim()), "");
+                            listener.onResponse(response.optBoolean("sucess"),
+                                    response.optString("message"));
                         }
                     }
                 },
