@@ -94,7 +94,8 @@ public class AeroCardioForgetPasswordNextActivity extends BaseAppCompatActivity 
                             gotoLogin();
                         } else {
                             Toast.makeText(AeroCardioForgetPasswordNextActivity.this,
-                                    R.string.http_conn_net, Toast.LENGTH_SHORT).show();
+                                    getString(R.string.password_fail_err, response),
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
