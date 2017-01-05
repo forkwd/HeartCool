@@ -16,9 +16,10 @@ public final class EcgStats {
 
     private volatile boolean isLock = false;
 
-    private EcgFilter filter;
-    private EcgMarkAnalyzer analyzer;
-    private EcgMarkCounter counter;
+    private final EcgFilter filter;
+    private final EcgMarkAnalyzer analyzer;
+    private final EcgMarkCounter counter;
+    private final EcgMarkRealTimer realTimer;
 
     public EcgFilter getFilter() {
         return filter;
@@ -32,6 +33,10 @@ public final class EcgStats {
         return counter;
     }
 
+    public EcgMarkRealTimer getRealTimer() {
+        return realTimer;
+    }
+
     private Map<EcgMark, ArrayList<Ecg>> result;
 
     public EcgStats() {
@@ -39,6 +44,7 @@ public final class EcgStats {
         filter = new EcgFilter();
         analyzer = new EcgMarkAnalyzer();
         counter = new EcgMarkCounter();
+        realTimer = new EcgMarkRealTimer();
         result = new HashMap<>();
     }
 
@@ -54,6 +60,7 @@ public final class EcgStats {
         if (!isLock) {
             analyzer.startRecord();
             counter.start();
+            realTimer.start();
         }
     }
 
@@ -61,6 +68,7 @@ public final class EcgStats {
         if (!isLock) {
             analyzer.stopRecord();
             counter.stop();
+            realTimer.stop();
         }
     }
 
@@ -69,6 +77,7 @@ public final class EcgStats {
             filter.clear();
             analyzer.clear();
             counter.clear();
+            realTimer.clear();
             result.clear();
         }
     }
@@ -83,6 +92,7 @@ public final class EcgStats {
         if (!isLock && EcgUtil.validEcgMark(m)) {
             analyzer.recordMark(m);
             counter.put(m);
+            realTimer.put(m);
         }
     }
 

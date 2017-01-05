@@ -5,6 +5,8 @@ package com.uteamtec.heartcool.service.listener;
  */
 public interface EcgMarkListener {
 
+    void onMarkUpdated();
+
     void onMarkLeadOff(String msg);
 
     void onMarkLowPower(String msg);
@@ -13,7 +15,7 @@ public interface EcgMarkListener {
 
     void onMarkUnplug(String msg);
 
-    void onMarkHR(int hr, int hrAverage, int hrHealth);
+    void onMarkHR(int hr, boolean warn, int hrAverage, int hrHealth);
 
     void onMarkBR(int br);
 

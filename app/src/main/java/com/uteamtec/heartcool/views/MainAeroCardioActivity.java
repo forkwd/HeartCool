@@ -238,6 +238,10 @@ public class MainAeroCardioActivity extends BaseActivity {
 
                 ListenerMgr.registerEcgMarkListener(new EcgMarkListener() {
                     @Override
+                    public void onMarkUpdated() {
+                    }
+
+                    @Override
                     public void onMarkLeadOff(String msg) {
                         mWarningViewHard.showWarningUI(MainAeroCardioActivity.this,
                                 WarningView.WarningType.LEADOFF);
@@ -256,7 +260,8 @@ public class MainAeroCardioActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onMarkHR(final int hr, final int hrAverage, final int hrHealth) {
+                    public void onMarkHR(final int hr, final boolean warn,
+                                         final int hrAverage, final int hrHealth) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

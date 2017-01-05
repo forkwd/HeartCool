@@ -29,13 +29,17 @@ public final class EcgMarkAnalyzer {
                 seconds / 3600, seconds % 3600 / 60, seconds % 60);
     }
 
+    private int HR = 0;
     private long HRTotal = 0;
     private long HRCount = 0;
     private long HRHealthCount = 0;
 
+    private int BR = 0;
     private long BRTotal = 0;
     private long BRCount = 0;
     private long BRHealthCount = 0;
+
+    private long NoiseCount = 0;
 
     public EcgMarkAnalyzer() {
     }
@@ -78,6 +82,8 @@ public final class EcgMarkAnalyzer {
         BRTotal = 0;
         BRCount = 0;
         BRHealthCount = 0;
+
+        NoiseCount = 0;
     }
 
     public synchronized void recordMark(EcgMark m) {
@@ -95,17 +101,20 @@ public final class EcgMarkAnalyzer {
                 }
                 switch (m.getType()) {
                     case EcgMark.PHYSIO_HR:
+                        HR = VALUE;
                         HRTotal += VALUE;
                         HRCount++;
-                        if (VALUE >= 60 && VALUE <= 80) {
+                        if (55 < VALUE && VALUE < 105) {
                             HRHealthCount++;
                         }
                         if (ListenerMgr.hasEcgMarkListener()) {
-                            ListenerMgr.getEcgMarkListener().onMarkHR(VALUE,
+                            ListenerMgr.getEcgMarkListener().onMarkHR(
+                                    VALUE, (55 < VALUE && VALUE < 105),
                                     getAverageHR(), getHealthHR());
                         }
                         break;
                     case EcgMark.PHYSIO_BR:
+                        BR = VALUE;
                         BRTotal += VALUE;
                         BRCount++;
                         BRHealthCount++;
@@ -114,12 +123,22 @@ public final class EcgMarkAnalyzer {
                         }
                         break;
                     case EcgMark.PHYSIO_NOISE:
+                        NoiseCount++;
                         if (ListenerMgr.hasEcgMarkListener()) {
                             ListenerMgr.getEcgMarkListener().onMarkNoise("噪声");
                         }
                         break;
+                    case EcgMark.PHYSIO_USERINPUT:
+                        break;
+                    case EcgMark.PHYSIO_ABNORMAL:
+                        break;
                 }
                 break;
+            default:
+                return;
+        }
+        if (ListenerMgr.hasEcgMarkListener()) {
+            ListenerMgr.getEcgMarkListener().onMarkUpdated();
         }
     }
 
@@ -160,10 +179,14 @@ public final class EcgMarkAnalyzer {
                             ListenerMgr.getEcgMarkListener().onMarkShort("短路");
                         }
                         break;
+                    case EcgMark.STATUS_CHARGING:
+                        break;
                     case EcgMark.STATUS_UNPLUG:
                         if (ListenerMgr.hasEcgMarkListener()) {
                             ListenerMgr.getEcgMarkListener().onMarkUnplug("拔下");
                         }
+                        break;
+                    case EcgMark.STATUS_PLUG:
                         break;
                 }
                 break;
@@ -174,7 +197,7 @@ public final class EcgMarkAnalyzer {
                 switch (m.getType()) {
                     case EcgMark.PHYSIO_HR:
                         if (ListenerMgr.hasEcgMarkListener()) {
-                            ListenerMgr.getEcgMarkListener().onMarkHR(VALUE, -1, -1);
+                            ListenerMgr.getEcgMarkListener().onMarkHR(VALUE, true, -1, -1);
                         }
                         break;
                     case EcgMark.PHYSIO_BR:
@@ -186,6 +209,10 @@ public final class EcgMarkAnalyzer {
                         if (ListenerMgr.hasEcgMarkListener()) {
                             ListenerMgr.getEcgMarkListener().onMarkNoise("噪声");
                         }
+                        break;
+                    case EcgMark.PHYSIO_USERINPUT:
+                        break;
+                    case EcgMark.PHYSIO_ABNORMAL:
                         break;
                 }
                 break;
@@ -199,11 +226,24 @@ public final class EcgMarkAnalyzer {
         return (int) (HRTotal / HRCount);
     }
 
+    public boolean isHealthHR() {
+        if (HRCount == 0) {
+            return true;
+        }
+        return (55 < HR && HR < 105 && (float) (HRHealthCount / HRCount) >= 0.99f);
+    }
+
     public int getHealthHR() {
         if (HRCount <= 0) {
             return 0;
         }
-        return (int) (HRHealthCount * 100 / HRCount);
+        final int Q = (int) (HRHealthCount * 100 / HRCount);
+        int T = Q;
+        // TODO: 正常心率算法还不明确
+        if (T <= 0) {
+            return 0;
+        }
+        return T;
     }
 
     public int getAverageBR() {
@@ -211,6 +251,25 @@ public final class EcgMarkAnalyzer {
             return 0;
         }
         return (int) (BRTotal / BRCount);
+    }
+
+    public int getNoiseLevel() {
+        if (seconds <= 0) {
+            return 0;
+        }
+        int minutes = (int) (seconds / 60);
+        if (seconds % 60 != 0) {
+            minutes++;
+        }
+        final int LEVEL = (int) (NoiseCount / minutes);
+        if (LEVEL <= 1) {
+            return 0;
+        } else if (LEVEL <= 5) {
+            return 1;
+        } else if (LEVEL <= 10) {
+            return 2;
+        }
+        return 3;
     }
 
     public EcgMarkReport getReport() {

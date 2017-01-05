@@ -52,6 +52,9 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
     private TextView txHRHealth;
     private TextView txBR;
 
+    private int colorNormal;
+    private int colorWarn;
+
     private TextView txTimer;
 
     private WarningView warningViewHard;
@@ -89,6 +92,9 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
             txHRAverage = (TextView) getRootView().findViewById(R.id.fragment_aerocardio_tv_hr_average);// 平均心律
             txHRHealth = (TextView) getRootView().findViewById(R.id.fragment_aerocardio_tv_hr_health);// 心律正常范围
             txBR = (TextView) getRootView().findViewById(R.id.fragment_aerocardio_tv_br);// 实时呼吸率
+
+            colorNormal = getResources().getColor(R.color.colorDetection);
+            colorWarn = getResources().getColor(R.color.colorMore);
 
             txTimer = (TextView) getRootView().findViewById(R.id.fragment_aerocardio_tx_timer);
 
@@ -396,6 +402,11 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
     };
 
     private EcgMarkListener ecgMarkListener = new EcgMarkListener() {
+
+        @Override
+        public void onMarkUpdated() {
+        }
+
         @Override
         public void onMarkLeadOff(String msg) {
             L.e("EcgMarkListener.onMarkLeadOff: " + msg);
@@ -421,11 +432,13 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
         }
 
         @Override
-        public void onMarkHR(final int hr, final int hrAverage, final int hrHealth) {
+        public void onMarkHR(final int hr, final boolean warn,
+                             final int hrAverage, final int hrHealth) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     txHR.setText(String.valueOf(hr));
+                    txHR.setTextColor(warn ? colorWarn : colorNormal);
                     if (hrAverage >= 0) {
                         txHRAverage.setText(String.valueOf(hrAverage));  // 平均心律
                     }
