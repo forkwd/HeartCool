@@ -432,18 +432,20 @@ public abstract class AeroCardioFragment extends BaseFragment implements View.On
         }
 
         @Override
-        public void onMarkHR(final int hr, final boolean warn,
-                             final int hrAverage, final int hrHealth) {
+        public void onMarkHR(final int hr, final boolean hrWarn,
+                             final int hrAverage,
+                             final int hrHealth, final boolean healthWarn) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     txHR.setText(String.valueOf(hr));
-                    txHR.setTextColor(warn ? colorWarn : colorNormal);
+                    txHR.setTextColor(hrWarn ? colorWarn : colorNormal);
                     if (hrAverage >= 0) {
                         txHRAverage.setText(String.valueOf(hrAverage));  // 平均心律
                     }
                     if (hrHealth >= 0) {
                         txHRHealth.setText(String.valueOf(hrHealth));   // 正常
+                        txHRHealth.setTextColor(healthWarn ? colorWarn : colorNormal);
                     }
                 }
             });

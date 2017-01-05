@@ -260,8 +260,9 @@ public class MainAeroCardioActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onMarkHR(final int hr, final boolean warn,
-                                         final int hrAverage, final int hrHealth) {
+                    public void onMarkHR(final int hr, final boolean hrWarn,
+                                         final int hrAverage,
+                                         final int hrHealth, final boolean healthWarn) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

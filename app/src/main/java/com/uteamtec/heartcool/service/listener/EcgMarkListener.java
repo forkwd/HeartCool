@@ -15,7 +15,9 @@ public interface EcgMarkListener {
 
     void onMarkUnplug(String msg);
 
-    void onMarkHR(int hr, boolean warn, int hrAverage, int hrHealth);
+    void onMarkHR(int hr, boolean hrWarn,
+                  int hrAverage,
+                  int hrHealth, boolean healthWarn);
 
     void onMarkBR(int br);
 

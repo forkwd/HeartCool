@@ -110,7 +110,8 @@ public final class EcgMarkAnalyzer {
                         if (ListenerMgr.hasEcgMarkListener()) {
                             ListenerMgr.getEcgMarkListener().onMarkHR(
                                     VALUE, (55 < VALUE && VALUE < 105),
-                                    getAverageHR(), getHealthHR());
+                                    getAverageHR(),
+                                    getHealthHR(), (HRHealthCount * 100 / HRCount) >= 90);
                         }
                         break;
                     case EcgMark.PHYSIO_BR:
@@ -162,7 +163,8 @@ public final class EcgMarkAnalyzer {
                             String ch1 = "1";
                             String ch2 = "2";
                             String ch3 = "3";
-                            String combo = (chn1Off ? ch1 : " ") + (chn2Off ? ch2 : " ") + (chn3Off ? ch3 : " ");
+                            String combo = (chn1Off ? ch1 : " ") + (chn2Off ? ch2 : " ") +
+                                    (chn3Off ? ch3 : " ");
                             msg = "导联" + combo + "脱落";
                         }
                         if (ListenerMgr.hasEcgMarkListener()) {
@@ -197,7 +199,8 @@ public final class EcgMarkAnalyzer {
                 switch (m.getType()) {
                     case EcgMark.PHYSIO_HR:
                         if (ListenerMgr.hasEcgMarkListener()) {
-                            ListenerMgr.getEcgMarkListener().onMarkHR(VALUE, true, -1, -1);
+                            ListenerMgr.getEcgMarkListener().onMarkHR(VALUE, true,
+                                    -1, -1, true);
                         }
                         break;
                     case EcgMark.PHYSIO_BR:
@@ -219,6 +222,9 @@ public final class EcgMarkAnalyzer {
         }
     }
 
+    /**
+     * 平均心率
+     */
     public int getAverageHR() {
         if (HRCount <= 0) {
             return 0;
@@ -226,13 +232,19 @@ public final class EcgMarkAnalyzer {
         return (int) (HRTotal / HRCount);
     }
 
+    /**
+     * 是否正常心率
+     */
     public boolean isHealthHR() {
         if (HRCount == 0) {
             return true;
         }
-        return (55 < HR && HR < 105 && (float) (HRHealthCount / HRCount) >= 0.99f);
+        return (55 < HR && HR < 105 && (float) (HRHealthCount / HRCount) >= 0.90f);
     }
 
+    /**
+     * 正常心率指标
+     */
     public int getHealthHR() {
         if (HRCount <= 0) {
             return 0;
@@ -266,6 +278,9 @@ public final class EcgMarkAnalyzer {
         return 0;
     }
 
+    /**
+     * 平均呼吸率
+     */
     public int getAverageBR() {
         if (BRCount <= 0) {
             return 0;
