@@ -289,11 +289,13 @@ public final class EcgMarkAnalyzer {
     public int getHealthHRLevel() {
         if (HR <= 0) {
             return 1;
-        } else if (this.HR <= 100 && this.HR >= 84 || this.HR <= 48) {
-            return 2;
-        } else if (this.HR > 100) {
-            return 3;
         }
+        // TODO: 还没有接口算法实现
+//        if (this.HR <= 100 && this.HR >= 84 || this.HR <= 48) {
+//            return 2;
+//        } else if (this.HR > 100) {
+//            return 3;
+//        }
         return 0;
     }
 
