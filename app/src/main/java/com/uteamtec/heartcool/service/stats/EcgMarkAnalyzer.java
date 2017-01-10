@@ -39,7 +39,8 @@ public final class EcgMarkAnalyzer {
     private long BRCount = 0;
     private long BRHealthCount = 0;
 
-    private long NoiseCount = 0;
+    private long AbnormalCount = 0; // 异常个数
+    private long NoiseCount = 0; // 噪声个数
 
     public EcgMarkAnalyzer() {
     }
@@ -83,6 +84,7 @@ public final class EcgMarkAnalyzer {
         BRCount = 0;
         BRHealthCount = 0;
 
+        AbnormalCount = 0;
         NoiseCount = 0;
     }
 
@@ -106,6 +108,8 @@ public final class EcgMarkAnalyzer {
                         HRCount++;
                         if (55 < VALUE && VALUE < 105) {
                             HRHealthCount++;
+                        } else {
+                            AbnormalCount++;
                         }
                         if (ListenerMgr.hasEcgMarkListener()) {
                             ListenerMgr.getEcgMarkListener().onMarkHR(
@@ -132,6 +136,7 @@ public final class EcgMarkAnalyzer {
                     case EcgMark.PHYSIO_USERINPUT:
                         break;
                     case EcgMark.PHYSIO_ABNORMAL:
+                        AbnormalCount++;
                         break;
                 }
                 break;
@@ -250,8 +255,22 @@ public final class EcgMarkAnalyzer {
             return 0;
         }
         final int Q = (int) (HRHealthCount * 100 / HRCount);
+        if (seconds <= 0) {
+            return Q;
+        }
+        int minutes = (int) (seconds / 60);
+        if (seconds % 60 != 0) {
+            minutes++;
+        }
         int T = Q;
-        // TODO: 正常心率算法还不明确
+        final int LEVEL = (int) (AbnormalCount / minutes);
+        if (LEVEL < 1) {
+            T -= 0;
+        } else if (LEVEL < 5) {
+            T -= 1;
+        } else {
+            T -= 5;
+        }
         if (T <= 0) {
             return 0;
         }
