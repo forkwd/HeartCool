@@ -111,12 +111,7 @@ public class AeroCardioHistoryDetailActivity extends BaseAppCompatActivity imple
                 goBack();
                 break;
             case R.id.history_detail_iv_share:
-                ShareSDKUtils.shareContent(this,
-                        "平均心律:" +
-                                TextView.class.cast(findViewById(R.id.history_detail_tv_heart_rate)).getText() +
-                                "\n正常心律范围" +
-                                TextView.class.cast(findViewById(R.id.history_detail_tv_heart_health)).getText() +
-                                "%");
+                showShare();
                 break;
         }
     }
@@ -185,6 +180,19 @@ public class AeroCardioHistoryDetailActivity extends BaseAppCompatActivity imple
 
         TextView.class.cast(findViewById(R.id.history_detail_tv_detection_conclusion)).
                 setText(detection.getMarkStats().getConclusion());
+
+        if (detection.getMarkStats().getHealthHRLevel() != 0) {
+            showShare();
+        }
+    }
+
+    private void showShare() {
+        ShareSDKUtils.shareContent(this,
+                "平均心律:" +
+                        TextView.class.cast(findViewById(R.id.history_detail_tv_heart_rate)).getText() +
+                        "\n正常心律范围" +
+                        TextView.class.cast(findViewById(R.id.history_detail_tv_heart_health)).getText() +
+                        "%");
     }
 
 }

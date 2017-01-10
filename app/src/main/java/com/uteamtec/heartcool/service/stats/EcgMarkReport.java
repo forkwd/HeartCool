@@ -11,6 +11,12 @@ import java.util.Date;
  */
 public final class EcgMarkReport {
 
+    private long seconds = 0;
+
+    public long getSeconds() {
+        return seconds;
+    }
+
     // 时间指标
     public String jlsj; // 记录时间
     public String jcsc; // 监测时长
@@ -32,6 +38,8 @@ public final class EcgMarkReport {
 
     public EcgMarkReport(EcgMarkAnalyzer analyzer) {
         if (analyzer != null) {
+            this.seconds = analyzer.getSeconds();
+
             this.jlsj = DateFormats.YYYY_MM_DD_HH_MM_CN.format(new Date());
             this.jcsc = analyzer.getSecondsFormat();
 
@@ -48,21 +56,25 @@ public final class EcgMarkReport {
             }
 
             switch (analyzer.getHealthHRLevel()) {
+                case 0:
+                    this.jcfk = getString(R.string.indicators);// 各项指标均在正常范围内
+                    this.yczb = getString(R.string.no);// 无
+                    break;
                 case 1:
                     this.jcfk = getString(R.string.arrest);// 心脏骤停
                     this.yczb = getString(R.string.heartExp);// 心律异常
                     break;
                 case 2:
-                    this.jcfk = getString(R.string.scope);// 部分指标不在正常范围内
+                    this.jcfk = getString(R.string.maybe_af_paf);// 可能房性类异常
                     this.yczb = getString(R.string.heartExp);// 心律异常
                     break;
                 case 3:
-                    this.jcfk = getString(R.string.fibrillation);// 房颤
+                    this.jcfk = getString(R.string.maybe_vf_pvc);// 可能室性类异常
                     this.yczb = getString(R.string.heartExp);// 心律异常
                     break;
                 default:
-                    this.jcfk = getString(R.string.indicators);// 各项指标均在正常范围内
-                    this.yczb = getString(R.string.no);// 无
+                    this.jcfk = getString(R.string.scope);// 部分指标不在正常范围内
+                    this.yczb = getString(R.string.scope);// 部分指标不在正常范围内
                     break;
             }
 

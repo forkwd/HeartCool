@@ -284,7 +284,8 @@ public final class EcgMarkAnalyzer {
      * 0-各项指标均在正常范围内;
      * 1-心脏骤停;
      * 2-可能房性类异常;
-     * 3-可能事性类异常
+     * 3-可能室性类异常
+     * 4-部分指标不在正常范围内
      */
     public int getHealthHRLevel() {
         if (HR <= 0) {
@@ -315,22 +316,7 @@ public final class EcgMarkAnalyzer {
      * @return int 0-优; 1-良; 2-中; 3-差
      */
     public int getNoiseLevel() {
-        if (seconds <= 0) {
-            return 0;
-        }
-        int minutes = (int) (seconds / 60);
-        if (seconds % 60 != 0) {
-            minutes++;
-        }
-        final int LEVEL = (int) (NoiseCount / minutes);
-        if (LEVEL <= 1) {
-            return 0;
-        } else if (LEVEL <= 5) {
-            return 1;
-        } else if (LEVEL <= 10) {
-            return 2;
-        }
-        return 3;
+        return EcgMarkAlgorithm.getNoiseLevel(seconds, NoiseCount);
     }
 
     public EcgMarkReport getReport() {

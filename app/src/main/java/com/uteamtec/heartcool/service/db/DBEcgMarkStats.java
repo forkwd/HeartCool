@@ -3,6 +3,9 @@ package com.uteamtec.heartcool.service.db;
 import com.litesuits.orm.db.annotation.Default;
 import com.litesuits.orm.db.annotation.NotNull;
 import com.litesuits.orm.db.annotation.Table;
+import com.uteamtec.heartcool.AeroCardioApp;
+import com.uteamtec.heartcool.R;
+import com.uteamtec.heartcool.service.stats.EcgMarkAlgorithm;
 import com.uteamtec.heartcool.service.stats.EcgMarkReport;
 import com.uteamtec.heartcool.service.type.EcgMark;
 
@@ -15,6 +18,7 @@ public class DBEcgMarkStats extends DBModel {
 
     public DBEcgMarkStats(DBDetection detection) {
         if (detection != null) {
+            setSeconds(detection.getStopTime() - detection.getStartTime());
             setHR(detection.getHR());
             setHRHealth(detection.getHRRange());
             setBR(detection.getBR());
@@ -25,6 +29,7 @@ public class DBEcgMarkStats extends DBModel {
 
     public void setEcgMarkReport(EcgMarkReport report) {
         if (report != null) {
+            setSeconds(report.getSeconds());
             setHR(report.HR);
             setHRHealth(report.HRHealth);
             setBR(report.BR);
@@ -62,6 +67,10 @@ public class DBEcgMarkStats extends DBModel {
             }
         }
     }
+
+    @Default("0")
+    @NotNull
+    private long seconds; // 监测时间
 
     @Default("未知")
     @NotNull
@@ -110,6 +119,14 @@ public class DBEcgMarkStats extends DBModel {
     @Default("未知")
     @NotNull
     private String conclusion; // 监测结论
+
+    public long getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(long seconds) {
+        this.seconds = seconds;
+    }
 
     public String getSQ() {
         return SQ;
@@ -227,7 +244,34 @@ public class DBEcgMarkStats extends DBModel {
         this.FC++;
     }
 
+    public int getHealthHRLevel() {
+        return EcgMarkAlgorithm.getHealthHRLevel(getSeconds(), getHR(),
+                getXLBQ(), getXLGS(), getXLGH(),
+                getSXZB(), getFXZB(), getSC(), getFC());
+    }
+
+    private String getString(int resId) {
+        return AeroCardioApp.getApplication().getString(resId);
+    }
+
     public String getConclusion() {
+        switch (getHealthHRLevel()) {
+            case 0:
+                conclusion = getString(R.string.indicators);// 各项指标均在正常范围内
+                break;
+            case 1:
+                conclusion = getString(R.string.arrest);// 心脏骤停
+                break;
+            case 2:
+                conclusion = getString(R.string.maybe_af_paf);// 可能房性类异常
+                break;
+            case 3:
+                conclusion = getString(R.string.maybe_vf_pvc);// 可能室性类异常
+                break;
+            case 4:
+                conclusion = getString(R.string.scope);// 部分指标不在正常范围内
+                break;
+        }
         return conclusion;
     }
 

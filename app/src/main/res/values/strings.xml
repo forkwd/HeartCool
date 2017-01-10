@@ -270,6 +270,8 @@
     <string name="offline">离线模式</string>
 
     <string name="no_detection_report">采集数据不够或者不理想，请重试</string>
+    <string name="maybe_af_paf">可能房性类异常</string>
+    <string name="maybe_vf_pvc">可能室性类异常</string>
 
     <string name="is_exist_telephone">该账户已存在，可通过忘记密码找回</string>
     <string name="is_not_exist_telephone">该账户不存在</string>
