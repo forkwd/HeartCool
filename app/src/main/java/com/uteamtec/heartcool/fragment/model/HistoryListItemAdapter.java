@@ -76,7 +76,8 @@ public class HistoryListItemAdapter extends BaseCalendarListAdapter<HistoryListI
         }
         contentViewHolder.model = model;
         if (model.getDetection() != null) {
-            contentViewHolder.startTimeText.setText(model.getDetection().getStartTimeStrCN());
+            contentViewHolder.startTimeText.setText(model.getDetection().getDateStrCN() +
+                    " " + model.getDetection().getStartTimeStrCN());
             contentViewHolder.durationText.setText(model.getDetection().getDuration());
             contentViewHolder.feedbackText.setText(model.getDetection().getFeedback());
             contentViewHolder.exceptionText.setText(model.getDetection().getAbnormal());

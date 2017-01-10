@@ -286,4 +286,7 @@
     <string name="level_normal">中</string>
     <string name="level_bad">差</string>
 
+    <string name="flag_left">&lt;</string>
+    <string name="flag_right">&gt;</string>
+
 </resources>

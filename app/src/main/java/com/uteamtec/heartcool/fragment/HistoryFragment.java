@@ -97,8 +97,8 @@ public abstract class HistoryFragment extends BaseFragment implements View.OnCli
                     findViewById(R.id.fragment_history_tx_year_month);
             txTitle.setText(calendarListView.getMonth());
 
-            getRootView().findViewById(R.id.fragment_history_iv_left).setOnClickListener(this);
-            getRootView().findViewById(R.id.fragment_history_iv_right).setOnClickListener(this);
+            getRootView().findViewById(R.id.fragment_history_tv_left).setOnClickListener(this);
+            getRootView().findViewById(R.id.fragment_history_tv_right).setOnClickListener(this);
         }
     }
 
@@ -123,10 +123,10 @@ public abstract class HistoryFragment extends BaseFragment implements View.OnCli
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.fragment_history_iv_left:
+            case R.id.fragment_history_tv_left:
                 calendarListView.changeMonth(false);
                 break;
-            case R.id.fragment_history_iv_right:
+            case R.id.fragment_history_tv_right:
                 calendarListView.changeMonth(true);
                 break;
         }

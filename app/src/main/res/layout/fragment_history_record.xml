@@ -13,8 +13,8 @@
         android:layout_weight="1">
 
         <com.uteamtec.heartcool.user.ColorfulRingProgressView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             app:bgColor="@color/colorHint"
             app:fgColorEnd="@color/colorRole"
@@ -44,14 +44,14 @@
                     android:layout_height="wrap_content"
                     android:text="000"
                     android:textColor="@color/colorDetection"
-                    android:textSize="20sp" />
+                    android:textSize="22sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="BPM"
                     android:textColor="@color/colorHisSize"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <TextView
@@ -60,7 +60,7 @@
                 android:gravity="center"
                 android:text="@string/avaghr"
                 android:textColor="@color/colorHisSize"
-                android:textSize="13sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
     </FrameLayout>
@@ -72,8 +72,8 @@
         android:layout_weight="1">
 
         <com.uteamtec.heartcool.user.ColorfulRingProgressView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             app:bgColor="@color/colorHint"
             app:fgColorEnd="@color/colorRole"
@@ -103,14 +103,14 @@
                     android:layout_height="wrap_content"
                     android:text="000"
                     android:textColor="@color/colorDetection"
-                    android:textSize="20sp" />
+                    android:textSize="22sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="%"
                     android:textColor="@color/colorHisSize"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <TextView
@@ -119,7 +119,7 @@
                 android:gravity="center"
                 android:text="@string/heart_hr"
                 android:textColor="@color/colorHisSize"
-                android:textSize="13sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
     </FrameLayout>
@@ -131,8 +131,8 @@
         android:layout_weight="1">
 
         <com.uteamtec.heartcool.user.ColorfulRingProgressView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             app:bgColor="@color/colorHint"
             app:fgColorEnd="@color/colorRole"
@@ -144,8 +144,8 @@
 
         <LinearLayout
             android:id="@+id/fragment_history_ll_result"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="vertical"
@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:text="点击进入"
                 android:textColor="@color/colorHisSize"
-                android:textSize="12sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -165,7 +165,7 @@
                 android:gravity="center"
                 android:text="测评详情"
                 android:textColor="@color/colorHisSize"
-                android:textSize="13sp" />
+                android:textSize="16sp" />
         </LinearLayout>
     </FrameLayout>
 

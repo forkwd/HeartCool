@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textColor="@color/black_80000000"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/calendar_item_tv_count"
@@ -20,7 +20,7 @@
         android:layout_marginBottom="1dp"
         android:layout_marginLeft="2dp"
         android:textColor="@color/red_ff725f"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         android:visibility="gone" />
 
