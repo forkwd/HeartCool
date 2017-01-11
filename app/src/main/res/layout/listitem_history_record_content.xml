@@ -15,13 +15,13 @@
                 style="@style/historyText"
                 android:layout_width="wrap_content"
                 android:text="@string/detectionStart"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/history_record_item_tv_start_time"
                 style="@style/historyShow"
                 android:text="2016-01-06 14：54：42 "
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout style="@style/historyLayout">
@@ -30,13 +30,13 @@
                 style="@style/historyText"
                 android:layout_width="wrap_content"
                 android:text="@string/testDuration"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/history_record_item_tv_duration"
                 style="@style/historyShow"
                 android:text="00:05:42"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout style="@style/historyLayout">
@@ -45,13 +45,13 @@
                 style="@style/historyText"
                 android:layout_width="wrap_content"
                 android:text="@string/testFeedback"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/history_record_item_tv_feedback"
                 style="@style/historyShow"
                 android:text="@string/feedbackData"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout style="@style/historyLayout">
@@ -60,13 +60,13 @@
                 style="@style/historyText"
                 android:layout_width="wrap_content"
                 android:text="@string/anomalyIndex"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/history_record_item_tv_exception"
                 style="@style/historyShow"
                 android:text="@string/exception"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <include

@@ -119,6 +119,10 @@ public class AeroCardioRegisterActivity extends BaseAppCompatActivity implements
                                             }
                                         }
                                     });
+
+                            //                            // TODO: 测试
+//                            L.e("code: " + code);
+//                            btnSendVerify.setEnabled(true);
                         }
                     }
                 });

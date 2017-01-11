@@ -56,17 +56,17 @@ public final class BleFeTxThread extends Thread {
         while (_enabled) {
             msg = BleFeTxQueue.take();
             if (msg != null) {
-                byte[] packet = FeMessageCoder.encode(msg);
-//                L.e("<BLE> W = " + BleUtils.bytesToHex(packet));
+                L.e("BleFeTxThread.Write Type: " + msg.getType());
                 BleManager.getClient().writeNoRsp(BleFeConstant.SERVICE_UUID, BleFeConstant.TX_UUID,
-                        packet, new BleIOResponse.Write() {
+                        FeMessageCoder.encode(msg), new BleIOResponse.Write() {
                             @Override
                             public void onWriteSuccess() {
+                                L.e("BleFeTxThread.Write(success)");
                             }
 
                             @Override
                             public void onWriteFail(String s) {
-                                L.e("<BLE> W Error=" + s);
+                                L.e("BleFeTxThread.Write(failed): " + s);
                             }
                         });
             }
