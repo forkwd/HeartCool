@@ -10,10 +10,14 @@ android {
         versionCode 10
         versionName "1.5.1"
     }
+    signingConfigs {
+        sign
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sign
         }
     }
     productFlavors {
@@ -29,8 +33,8 @@ repositories {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:design:25.2.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile files('libs/ThinkGear.jar')
     compile files('libs/afinal_0.5.1.jar')
@@ -43,4 +47,21 @@ dependencies {
     compile(name: 'blekit')
     compile(name: 'lite-orm-1.9.2')
     compile(name: 'calendarlistview', ext: 'aar')
+}
+
+def ksFile = rootProject.file('keystore.properties')
+def props = new Properties();
+if (ksFile.canRead()) {
+    props.load(new FileInputStream(ksFile))
+
+    if (props != null) {
+        android.signingConfigs.sign.storeFile file(props['KEYSTORE_FILE'])
+        android.signingConfigs.sign.storePassword props['KEYSTORE_PASSWORD']
+        android.signingConfigs.sign.keyAlias props['KEYSTORE_ALIAS']
+        android.signingConfigs.sign.keyPassword props['KEYSTORE_ALIAS_PASSWORD']
+    } else {
+        println 'some entries in \'keystore.properties\' not found!'
+    }
+} else {
+    println '\'keystore.properties\' not found!'
 }
