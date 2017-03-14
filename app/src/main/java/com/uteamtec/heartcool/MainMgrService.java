@@ -355,7 +355,6 @@ public class MainMgrService extends Service {
                     // TODO: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                     break;
                 case FeMessage.TYPE_USERINPUT:
-                    L.i("<BLE> <RX> userinput");
                     if (User.getUser().getFeState() == User.FESTATE_REGISTERED) {
                         L.e("FeMessage.TYPE_USERINPUT (success)");
                         User.getUser().resetLastFeMessageTime();

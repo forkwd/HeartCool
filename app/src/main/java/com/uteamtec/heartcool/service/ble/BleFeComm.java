@@ -49,12 +49,12 @@ public final class BleFeComm {
         BleManager.getScanner().setListener(new BleScannerListener() {
             @Override
             public void onScannerStarted() {
-                L.e("onScannerStarted");
+                L.e("BleFeComm.onScannerStarted");
             }
 
             @Override
             public void onDeviceFounded(BleScannerDevice device) {
-//                L.e("onDeviceFounded: " + device.getName() + " - " + device.getAddress());
+//                L.e("BleFeComm.onDeviceFounded: " + device.getName() + " - " + device.getAddress());
                 if (ListenerMgr.getBleDeviceScannedListener() != null) {
                     ListenerMgr.getBleDeviceScannedListener().onBleDeviceScanned(device.device);
                 }
@@ -62,7 +62,7 @@ public final class BleFeComm {
 
             @Override
             public void onScannerStopped() {
-                L.e("onScannerStopped");
+                L.e("BleFeComm.onScannerStopped");
                 if (ListenerMgr.getBleDeviceScannedListener() != null) {
                     ListenerMgr.getBleDeviceScannedListener().onBleScanFinished();
                 }
@@ -72,7 +72,7 @@ public final class BleFeComm {
             @Override
             public void onConnecting() {
                 onDisconnected();
-                L.e("onConnecting");
+                L.e("BleFeComm.onConnecting");
                 User.getUser().setFeState(User.FESTATE_CONNECTING);
                 if (ListenerMgr.getUserStateChangedListener() != null) {
                     ListenerMgr.getUserStateChangedListener().onFeStateChanged(User.getUser().getFeState());
@@ -81,9 +81,8 @@ public final class BleFeComm {
 
             @Override
             public void onConnected() {
-                L.e("onConnected");
+                L.e("BleFeComm.onConnected");
                 User.getUser().setFeState(User.FESTATE_CONNECTED);
-                L.i("<BLE> FE connected");
 
                 User.getUser().resetLastFeMessageTime();
                 User.getUser().setIsDevReset(false); //when connected, device is assumed to be not resetted
@@ -97,7 +96,7 @@ public final class BleFeComm {
 
             @Override
             public void onDisconnecting() {
-                L.e("onDisconnecting");
+                L.e("BleFeComm.onDisconnecting");
                 User.getUser().setFeState(User.FESTATE_DISCONNECTING);
 
                 if (ListenerMgr.getUserStateChangedListener() != null) {
@@ -107,7 +106,7 @@ public final class BleFeComm {
 
             @Override
             public void onDisconnected() {
-                L.e("onDisconnected");
+                L.e("BleFeComm.onDisconnected");
                 User.getUser().setFeState(User.FESTATE_DISCONNECTED);
 
                 //unregister previous connected device
@@ -131,7 +130,7 @@ public final class BleFeComm {
 
             @Override
             public void onResponseSuccess(BleGattProfile profile) {
-                L.e("onResponseSuccess: " + profile);
+                L.e("BleFeComm.onResponseSuccess: " + profile);
                 BleManager.getClient().notify(BleFeConstant.SERVICE_UUID, BleFeConstant.RX_UUID,
                         new BleIOResponse.Notify() {
                             @Override
@@ -144,12 +143,12 @@ public final class BleFeComm {
 
             @Override
             public void onResponseFailed() {
-                L.e("onResponseFailed");
+                L.e("BleFeComm.onResponseFailed");
             }
 
             @Override
             public void onRssi(Integer integer) {
-                L.e("onRssi: " + integer.toString());
+                L.e("BleFeComm.onRssi: " + integer.toString());
             }
         });
     }

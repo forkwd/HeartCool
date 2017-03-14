@@ -323,10 +323,12 @@ public class AeroCardioSettingActivity extends BaseAppCompatActivity
     private UserStateChangedListener userStateChangedListener = new UserStateChangedListener() {
         @Override
         public void onDeviceRegistered(UserDevice device, int regResult) {
+            L.e("AeroCardioSettingActivity -> onDeviceRegistered: " + regResult);
         }
 
         @Override
         public void onDeviceActivated(UserDevice device, int activateResult) {
+            L.e("AeroCardioSettingActivity -> onDeviceActivated: " + activateResult);
         }
 
         @Override
